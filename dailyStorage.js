@@ -39,9 +39,10 @@ const DailyStorage = {
     },
     canDoAccounts: function (accountArr) {
         log("阻塞等待，存在有效动作的账号")
+        let canA = []
         while (1) {
 
-            let canA = []
+
             for (accont of accountArr) {
                 DailyStorage.currentAccount = accont
                 if (!DailyStorage.yetSignToday() ||
@@ -49,7 +50,7 @@ const DailyStorage = {
                     canA.push(accont)
                 }
             }
-            log("获取所有具备有效动作的账号" + canA)
+            log("获取所有具备有效动作的账号 %s", canA)
 
             if (canA.length > 0) {
                 break
