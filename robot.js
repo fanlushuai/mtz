@@ -72,33 +72,42 @@ const Robot = {
   },
   changeNextAccount: function (cuAcc) {
     let accArr = WeiXin.getAllAccount();
-
-    // todo 切换到一个，有动作的账号。没有动作切他干啥？？？
-
-    // todo　过滤所有的账号。看看，有没有动作
+    // 切换到一个，有动作的账号。没有动作切他干啥？？？
+    //过滤所有的账号。看看，有没有动作
     accArr = DailyStorage.canDoAccounts(accArr);
 
     if (cuAcc == null) {
       cuAcc = WeiXin.getCurrentAccount();
     }
+
     log("当前账号 %s", cuAcc);
 
-    let currentIndex = accArr.indexOf(cuAcc);
-
-    let targetIndex;
-    if (currentIndex < 0) {
-      targetIndex = 0;
-    } else {
-      targetIndex = currentIndex + 1 > accArr.length - 1 ? 0 : currentIndex + 1;
+    function getNext(accArr, cuAcc) {
+      let currentIndex = accArr.indexOf(cuAcc);
+      let targetIndex;
+      if (currentIndex < 0) {
+        targetIndex = 0; //如果不存在，就设置到第一个
+      } else {
+        targetIndex =
+          currentIndex + 1 > accArr.length - 1 ? 0 : currentIndex + 1;
+      }
+      return accArr[targetIndex];
     }
 
-    let targetAccName = accArr[targetIndex];
+    let targetAccName = getNext(accArr, cuAcc);
     log("切换账号到 %s", targetAccName);
+
+    if (targetAccName == cuAcc) {
+      log("当前账号和目标账号一样，等待释放新的可用账号");
+      sleep(5 * 60 * 1000);
+    }
+
     if (!WeiXin.changeAccTo(targetAccName)) {
       log("继续切换");
       this.changeNextAccount(targetAccName);
     } else {
       log("切换成功");
+      sleep(2000);
       this.currentAccount = targetAccName;
     }
   },

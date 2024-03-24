@@ -45,7 +45,7 @@ const DailyStorage = {
     log("阻塞等待，存在有效动作的账号");
     let canA = [];
     while (1) {
-      for (accont of accountArr) {
+      for (let accont of accountArr) {
         DailyStorage.currentAccount = accont;
         if (!DailyStorage.yetSignToday() || DailyStorage.canReadNow()) {
           canA.push(accont);

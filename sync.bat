@@ -22,6 +22,6 @@ if %errorlevel% neq 0 (
 adb shell mkdir -p "%PHONE_FOLDER_PATH%"
 adb push "%PC_FOLDER_PATH%" "%PHONE_FOLDER_PATH%"
 adb push "%PC_FOLDER_PATH%" "%PHONE_BUILD_FOLDER_PATH%"
-adb disconnect
+@REM adb disconnect
 
 endlocal

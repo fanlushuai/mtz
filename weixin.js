@@ -31,7 +31,16 @@ const WeiXin = {
     sleep(1500);
   },
   chooseFirst: function () {
-    AutojsUtil.clickSelectorWithAutoRefresh(id("dwo"), "日期", 10, this.name);
+    let dateEle = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      id("dwo"),
+      "日期",
+      10,
+      this.name
+    );
+    let b = dateEle.bounds();
+
+    press(device.width / 3, b.top - 100, 2);
+
     sleep(1500);
   },
   longPressPic: function (x, y) {
@@ -98,7 +107,7 @@ const WeiXin = {
     let acArr = [];
     for (let aE of allAccountEles) {
       log("账号- %s", aE.getText());
-      acArr.push(aE.getText());
+      acArr.push(aE.getText() + "");
     }
 
     log("所有账号：%s", acArr);
