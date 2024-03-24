@@ -7,7 +7,7 @@ set PC_FOLDER_PATH="E:\code\mtz"
 
 set PHONE_FOLDER_PATH=/storage/emulated/0/autojs/
 
-set PHONE_BUILD_FOLDER_PATH=/storage/emulated/0/autojs/mtz-package
+set PHONE_BUILD_FOLDER_PATH=/storage/emulated/0/autojs/mtz/mtz-package
 
 adb devices
  
