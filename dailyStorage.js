@@ -36,6 +36,29 @@ const DailyStorage = {
 
         log("没有发现限制时间")
         return true
+    },
+    canDoAccounts: function (accountArr) {
+        log("阻塞等待，存在有效动作的账号")
+        while (1) {
+
+            let canA = []
+            for (accont of accountArr) {
+                DailyStorage.currentAccount = accont
+                if (!DailyStorage.yetSignToday() ||
+                    DailyStorage.canReadNow()) {
+                    canA.push(accont)
+                }
+            }
+            log("获取所有具备有效动作的账号" + canA)
+
+            if (canA.length > 0) {
+                break
+            }
+
+            sleep(2000)
+        }
+
+        return canA
     }
 
 }

@@ -72,38 +72,33 @@ const Robot = {
     changeNextAccount: function (cuAcc) {
         let accArr = WeiXin.getAllAccount()
 
+        // todo 切换到一个，有动作的账号。没有动作切他干啥？？？
+
+        // todo　过滤所有的账号。看看，有没有动作
+        accArr = DailyStorage.canDoAccounts(accArr)
+
         if (cuAcc == null) {
             cuAcc = WeiXin.getCurrentAccount()
         }
         log("当前账号 %s", cuAcc)
 
-        let index = accArr.indexOf(cuAcc)
+        let currentIndex = accArr.indexOf(cuAcc)
 
-        let location = index + 1 > accArr.length - 1 ? index : index + 1
-
-        if (location == index) {
-            log("已经到达最后一个账号")
-            let targetAccName = accArr[0]
-            log("切换到第一个账号 %s", targetAccName)
-            log("切换账号到 %s", targetAccName)
-            if (!WeiXin.changeAccTo(targetAccName)) {
-                log("继续切换")  //如果全部都失效，那就让他死循环了。
-                this.changeNextAccount(targetAccName)
-            } else {
-                log("切换成功")
-                // 第一次不要这个账号了。下一次切换的时候才会赋值这个。
-                this.currentAccount = targetAccName
-            }
+        let targetIndex;
+        if (currentIndex < 0) {
+            targetIndex = 0
         } else {
-            let targetAccName = accArr[location]
-            log("切换账号到 %s", targetAccName)
-            if (!WeiXin.changeAccTo(targetAccName)) {
-                log("继续切换")
-                this.changeNextAccount(targetAccName)
-            } else {
-                log("切换成功")
-                this.currentAccount = targetAccName
-            }
+            targetIndex = currentIndex + 1 > accArr.length - 1 ? 0 : currentIndex + 1
+        }
+
+        let targetAccName = accArr[targetIndex]
+        log("切换账号到 %s", targetAccName)
+        if (!WeiXin.changeAccTo(targetAccName)) {
+            log("继续切换")
+            this.changeNextAccount(targetAccName)
+        } else {
+            log("切换成功")
+            this.currentAccount = targetAccName
         }
     },
 

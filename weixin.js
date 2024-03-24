@@ -70,12 +70,12 @@ const WeiXin = {
 
         let allAccountEles = id("dy").find()
         let acArr = []
-        for (aE of allAccountEles) {
+        for (let aE of allAccountEles) {
             log("账号- %s", aE.getText())
             acArr.push(aE.getText())
         }
 
-        log("所有账号：%j", acArr)
+        log("所有账号：%s", acArr)
         return acArr
     },
     changeAccTo: function (name) {
