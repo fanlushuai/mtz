@@ -239,6 +239,17 @@ const MTZ = {
         let userId = e.getText().split("：")[1]
         log(userId)
         return userId
+    },
+    tryNotification: function () {
+        let e = text("我知道了").findOne(2000)
+        if (e) {
+            log("阅读公告")
+            sleep(4000)
+            log("点击 我知道了")
+            AutojsUtil.clickEle(e)
+        } else {
+            log("没发现公告")
+        }
     }
 }
 

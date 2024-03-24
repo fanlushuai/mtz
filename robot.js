@@ -18,7 +18,7 @@ const Robot = {
         sleep(4 * 1000)
     },
     sign: function () {
-        log("开始签到")
+        log("-->开始签到")
         MTZ.myPage()
         MTZ.sign()
     },
@@ -102,12 +102,6 @@ const Robot = {
         }
     },
 
-    task1: function () {
-        WeiXin.boot()
-    },
-    task2: function () {
-        this.jump2MTZ()
-    },
     taskMTZ: function () {
 
         // 判断一下，有没有公告
@@ -128,8 +122,10 @@ const Robot = {
             // this.exchange()
             sleep(1000)
 
-            WeiXin.back2Settings()
         }
+
+        WeiXin.back2Settings()
+
 
     },
     taskSwichAcc: function () {
@@ -150,6 +146,7 @@ const Robot = {
                 log("此账号不需要任何操作")
             } else {
                 this.jump2MTZ()  //跳入美添赚
+                MTZ.tryNotification()  //尝试发现，和关闭通知
                 this.taskMTZ()  // 签到，阅读互动，提款、提积分
             }
             this.taskSwichAcc()
