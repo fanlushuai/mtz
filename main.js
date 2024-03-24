@@ -4,7 +4,7 @@ const { AutojsUtil } = require("./autojsUtil");
 AutojsUtil.loadUI("美添赚助手", "./project.json", "./ui.xml")
 // 初始化界面数据
 // Config.setLSConfig2UI();
-
+ 
 AutojsUtil.autoServiceCheck()
 
 //todo 检测启动状态。是否还存在。来改变启动的按钮

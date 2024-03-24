@@ -63,16 +63,19 @@ const WeiXin = {
         }
     },
     getAllAccount: function () {
-
-        // AutojsUtil.refreshUI("微信")
-
         // fix 账号可能很多，还需要滚动屏幕
+        sleep(1000)
+
+        AutojsUtil.refreshUI("微信")
+
         let allAccountEles = id("dy").find()
         let acArr = []
         for (aE of allAccountEles) {
             log("账号- %s", aE.getText())
             acArr.push(aE.getText())
         }
+
+        log("所有账号：%j", acArr)
         return acArr
     },
     changeAccTo: function (name) {
@@ -102,6 +105,7 @@ const WeiXin = {
             log("登陆失效")
 
             back() //后退一下
+            sleep(1000)
             return false
         }
 

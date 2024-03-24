@@ -7,8 +7,6 @@ const Robot = {
     currentAccount: "",
     jump2MTZ: function () {
         log("开始进入每添赚")
-        Robot.currentAccount = WeiXin.wo()
-
         WeiXin.intoStarDir()
         WeiXin.searchByTag()
         WeiXin.chooseFirst()
@@ -146,13 +144,19 @@ const Robot = {
         this.changeNextAccount()
     },
     start: function () {
-        this.task1()
+        WeiXin.boot()
         while (1) {
             log("开始任务")
-            this.task2()  //跳入美添赚
+            Robot.currentAccount = WeiXin.wo()
+            DailyStorage.currentAccount = Robot.currentAccount
 
-            this.taskMTZ()  // 签到，阅读互动，提款、提积分
-
+            if (DailyStorage.yetSignToday()
+                && !DailyStorage.canReadNow()) {
+                log("此账号不需要任何操作")
+            } else {
+                this.jump2MTZ()  //跳入美添赚
+                this.taskMTZ()  // 签到，阅读互动，提款、提积分
+            }
             this.taskSwichAcc()
 
             // WeiXin.back2SettingsFromAcc()
