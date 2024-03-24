@@ -1,1 +1,0 @@
-    paint.setColor(this.color);
