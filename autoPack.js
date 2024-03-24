@@ -66,6 +66,7 @@ const Autojsx = {
     // pageUpBySwipe()
   },
   buildDir: function () {
+    sleep(1000);
     pageUpBySwipe();
 
     log("跳转到build位置");

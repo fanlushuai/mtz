@@ -118,16 +118,25 @@ const MTZ = {
         }
       } else {
         log("开始活动，未找到");
-        //todo 查看时间 剩余54分钟
-
-        let leftTimeEle = ele.parent().findOne(textMatches(/(剩余\d+分钟)/));
+        //剩余54分钟
+        // 剩余1小时15分钟
+        let leftTimeEle = ele.parent().findOne(textMatches(/(剩余.+分钟)/));
         if (leftTimeEle) {
-          let miniteStr = leftTimeEle
+          let textStr = leftTimeEle
             .getText()
             .replace("剩余", "")
             .replace("分钟", "");
-          let futureTime =
-            parseInt(miniteStr) * 1000 * 60 + new Date().getTime();
+
+          let futureTime;
+          if (textStr.indexOf("小时") > 0) {
+            let time2 = textStr.split("小时");
+            futureTime =
+              parseInt(time2[0]) * 1000 * 60 * 60 +
+              time2[1] * 1000 * 60 +
+              new Date().getTime();
+          } else {
+            futureTime = parseInt(textStr) * 1000 * 60 + new Date().getTime();
+          }
 
           DailyStorage.setReadNextTime(futureTime);
         }

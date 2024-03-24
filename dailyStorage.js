@@ -23,6 +23,7 @@ const DailyStorage = {
   },
   setReadNextTime: function (futureTime) {
     // 剩余54分钟
+    // 剩余1小时15分钟
     this.localStorage2().put("readNextTime", futureTime);
   },
   canReadNow: function () {
