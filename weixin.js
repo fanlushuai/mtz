@@ -94,7 +94,7 @@ const WeiXin = {
     let accountEle = id("co1").findOne().parent().parent().findOne(id("dy"));
     // log(accountEle)
     if (accountEle) {
-      return accountEle.getText();
+      return accountEle.text();
     }
   },
   getAllAccount: function () {
@@ -106,8 +106,8 @@ const WeiXin = {
     let allAccountEles = id("dy").find();
     let acArr = [];
     for (let aE of allAccountEles) {
-      log("账号- %s", aE.getText());
-      acArr.push(aE.getText() + "");
+      log("账号- %s", aE.text());
+      acArr.push(aE.text());
     }
 
     log("所有账号：%s", acArr);

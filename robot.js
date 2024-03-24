@@ -78,12 +78,14 @@ const Robot = {
 
     if (cuAcc == null) {
       cuAcc = WeiXin.getCurrentAccount();
+      log("获取当前账号 %s", cuAcc);
+    } else {
+      log("当前账号 %s", cuAcc);
     }
-
-    log("当前账号 %s", cuAcc);
 
     function getNext(accArr, cuAcc) {
       let currentIndex = accArr.indexOf(cuAcc);
+      console.log("当前账号索引 %s", currentIndex);
       let targetIndex;
       if (currentIndex < 0) {
         targetIndex = 0; //如果不存在，就设置到第一个
