@@ -70,6 +70,9 @@ const Autojsx = {
     pageUpBySwipe();
 
     log("跳转到build位置");
+
+    pageUpBySwipe();
+
     click(text("build").id("name").findOne());
 
     toast("老板，打包完成！！");
