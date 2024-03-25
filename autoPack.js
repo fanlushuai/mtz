@@ -74,11 +74,122 @@ const Autojsx = {
 
     toast("老板，打包完成！！");
   },
+  share: function () {
+    let x = id("sort").findOne().bounds().centerX();
+    let y = id("name").findOne().bounds().centerY();
+    press(x, y, 1);
+    sleep(1000);
+    sleep(1000);
+    click(text("发送").findOne());
+    sleep(1000);
+  },
+  getClipX: function (callback) {
+    // 清空剪切板存储
+    let clipStorage = storages.create("clip");
+    clipStorage.put("1", "111111");
+
+    var w = floaty.window(
+      <frame gravity="center" bg="#ffffff">
+        <text id="text"></text>
+      </frame>
+    );
+    ui.run(function () {
+      w.requestFocus();
+      setTimeout(() => {
+        // toastLog();
+        let c = getClip();
+        log("读取剪切板内容: %s", c);
+        // 设置剪切板存储
+        let clipStorage = storages.create("clip");
+        clipStorage.put("1", c);
+        w.disableFocus();
+        w.close();
+        //执行回调函数,异步处理
+        if (callback) {
+          threads.start(function () {
+            callback(c);
+          });
+        }
+      }, 1);
+    });
+
+    //可以阻塞获取值 // 这样是错误的。获取不到
+    return () => {
+      let clipStorage = storages.create("clip");
+      while (1) {
+        let c = clipStorage.get("1", "111111");
+        if (c != "111111") {
+          return c;
+        }
+        sleep(200);
+      }
+    };
+  },
+  setClipX: function (text) {
+    console.log("设置剪切板=> %s", text);
+    setClip(text);
+    sleep(500);
+  },
+};
+
+const WeiXin = {
+  sendTo: function (name) {
+    WeiXin.boot();
+    click(text(name).findOne());
+    sleep(2000);
+
+    let clipContent = Autojsx.getClipX()();
+
+    id("com.tencent.mm:id/bkk") //点击必须使用全id！！！
+      .clickable(true)
+      .findOne()
+      .setText(clipContent);
+    log("设置输入框");
+    sleep(3000);
+
+    click(text("发送").findOne());
+    log("点击发送");
+    back(); //收回键盘
+    back(); //返回首页
+    log("发送微信链接结束");
+  },
+  boot: function () {
+    app.launchApp("微信");
+    sleep(2000);
+  },
+};
+
+const Oppo = {
+  sendToWss: function () {
+    log("上传文叔叔");
+    click(text("文叔叔").findOne());
+    sleep(500);
+    click(text("通过文叔叔发送").findOne());
+    sleep(500);
+    click(desc("发送").findOne());
+    let j = text("跳过").findOne(2000);
+    if (j) {
+      log("跳过广告");
+      click(j);
+    }
+    sleep(3 * 1000);
+    while (desc("上传中…").exists()) {
+      sleep(1000);
+    }
+
+    log("上传成功");
+    sleep(2000);
+    log("长按复制");
+    let b = desc("复制").findOne();
+    press(b.bounds().centerX(), b.bounds().centerY(), 800);
+  },
 };
 
 function click(b) {
   sleep(1 * 1000);
-  press(b.bounds().centerX(), b.bounds().centerY(), 100);
+  // AutojsUtil.showPoint(b.bounds().centerX(), b.bounds().centerY());
+  log("%s %s", b.bounds().centerX(), b.bounds().centerY());
+  press(b.bounds().centerX(), b.bounds().centerY(), 1);
   sleep(1 * 1000);
 }
 
@@ -114,7 +225,20 @@ function pageDownBySwipe() {
 
 let projectName = "mtz-package";
 
-Autojsx.boot();
-Autojsx.backIfInbuildDir();
-Autojsx.pack(projectName);
-Autojsx.back();
+function build() {
+  Autojsx.boot();
+  Autojsx.backIfInbuildDir();
+  Autojsx.pack(projectName);
+  Autojsx.back();
+}
+
+function share() {
+  Autojsx.share();
+  Oppo.sendToWss();
+  WeiXin.sendTo("文件传输助手");
+}
+
+build();
+share();
+
+// WeiXin.sendTo("文件传输助手");
