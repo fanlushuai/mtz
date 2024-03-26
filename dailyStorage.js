@@ -21,6 +21,21 @@ const DailyStorage = {
   yetSignToday: function () {
     return this.localStorage().get("sign", false);
   },
+  setWithdrawToday: function () {
+    log("设置 已经提现 标记");
+    this.localStorage().put("Withdraw", true);
+  },
+  yetWithdrawToday: function () {
+    return this.localStorage().get("Withdraw", false);
+  },
+  setTransferScoreToday: function () {
+    log("设置 转移积分 标记");
+    this.localStorage().put("TransferScore", true);
+  },
+  yetTransferScoreToday: function () {
+    return this.localStorage().get("TransferScore", false);
+  },
+
   setReadNextTime: function (futureTime) {
     // 剩余54分钟
     // 剩余1小时15分钟

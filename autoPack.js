@@ -66,14 +66,15 @@ const Autojsx = {
     // pageUpBySwipe()
   },
   buildDir: function () {
-    sleep(1000);
     pageUpBySwipe();
 
+    sleep(1000);
     log("跳转到build位置");
 
-    pageUpBySwipe();
-
     click(text("build").id("name").findOne());
+    sleep(1000);
+
+    pageUpBySwipe();
 
     toast("老板，打包完成！！");
   },
@@ -175,7 +176,14 @@ const Oppo = {
       log("跳过广告");
       click(j);
     }
-    sleep(3 * 1000);
+
+    // 不存在，就一直等着
+    while (!desc("上传中…").exists()) {
+      sleep(1000);
+    }
+
+    log("上传中");
+
     while (desc("上传中…").exists()) {
       sleep(1000);
     }
@@ -226,7 +234,7 @@ function pageDownBySwipe() {
   swipe(x, h1, x, h2, 100); //向下翻页(从纵坐标6分之5处拖到纵坐标6分之1处)
 }
 
-let projectName = "mtz-package";
+let projectName = "inHereBuild";
 
 function build() {
   Autojsx.boot();

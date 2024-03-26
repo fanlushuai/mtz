@@ -3,6 +3,7 @@ const { DailyStorage } = require("./dailyStorage");
 const { WeiXin } = require("./weixin");
 
 const MTZ = {
+  withdrawPW: "1111",
   //  美添赚
   flushAll: function () {
     log("重载所有");
@@ -86,6 +87,9 @@ const MTZ = {
         WeiXin.refreshWeb();
       }
     );
+
+    // 莫名其妙，有时候会弹出来
+    this.tryNotification();
   },
 
   activeRead: function () {
@@ -214,17 +218,40 @@ const MTZ = {
     log("兑换");
     AutojsUtil.clickSelectorWithAutoRefresh(text("兑换"), "兑换", 10, "微信");
   },
-  payout2WeiXin: function () {
-    log("提现到微信");
+  payout2WeiXin: function (userId) {
+    log("--> 进行提现");
     AutojsUtil.clickSelectorWithAutoRefresh(
       text("提现到微信"),
       "提现到微信",
       10,
       "微信"
     );
+
+    if (AutojsUtil.waitFor(text("抱歉提现金额最低1元"), 3)) {
+      log("提现额度太小，结束");
+      WeiXin.refreshWeb();
+      return;
+    }
+
+    log("输入账号，密码");
+    let x = className("EditText").visibleToUser(true).clickable(true).find();
+    // x[0].setText("1");
+    // x[1].setText("2");
+    // x[2].setText("1553733");
+    x[2].setText(userId);
+    x[3].setText(this.withdrawPW);
+
+    log("确认");
+    text("确认").clickable(true).findOne().click();
+
+    log("等待提现成功");
+    sleep(4000); //todo 等待提现成功
+
+    // 刷新，或者back吧
   },
-  transferScore: function () {
-    log("积分转移");
+  transferScore: function (userId) {
+    log("--> 转移积分");
+
     AutojsUtil.clickSelectorWithAutoRefresh(
       text("积分转移"),
       "积分转移",
@@ -235,6 +262,30 @@ const MTZ = {
     log("再次点击 积分转移");
     let e = text("积分转移").clickable(true).findOne();
     AutojsUtil.clickEle(e);
+
+    // 抱歉转移最低1积分
+    if (AutojsUtil.waitFor(text("抱歉转移最低1积分"), 3)) {
+      log("积分不够，结束");
+      WeiXin.refreshWeb();
+
+      return;
+    }
+
+    sleep(1000);
+    log("输入账号，密码");
+    let x = className("EditText").visibleToUser(true).clickable(true).find();
+    // x[0].setText("1");
+    // x[1].setText("2");
+    // x[2].setText("1553733");
+    x[2].setText(userId);
+    x[3].setText(this.withdrawPW);
+
+    log("确认");
+    text("确认").clickable(true).findOne().click();
+
+    sleep(3000);
+
+    WeiXin.refreshWeb();
   },
   tryLookError: function () {
     let ele = textMatches(/(.*悬浮窗已失效,请重新扫码进入.*)/).findOne(1500);
@@ -244,13 +295,23 @@ const MTZ = {
     }
   },
   getUserId: function () {
-    let e = textMatches(/(用户ID：\d+)/).findOne();
-    let userId = e.getText().split("：")[1];
-    log(userId);
+    let userIDELe = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      textMatches(/(用户ID.*)/),
+      "获取用户id",
+      8,
+      "微信",
+      function () {
+        AutojsUtil.refreshWeb();
+      }
+    );
+
+    let userId = userIDELe.text().replace("用户ID：", "");
+
+    log("用户id %s", userId);
     return userId;
   },
   tryNotification: function () {
-    let e = text("我知道了").findOne(2000);
+    let e = text("我知道了").visibleToUser(true).findOne(2000);
     if (e) {
       log("阅读公告");
       sleep(4000);
@@ -261,6 +322,9 @@ const MTZ = {
     }
   },
 };
+
+MTZ.exchange();
+MTZ.transferScore();
 
 // MTZ.getUserId()
 // MTZ.exchange()

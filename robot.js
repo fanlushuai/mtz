@@ -1,6 +1,6 @@
-const { AutojsUtil } = require("./autojsUtil");
+const { Config } = require("./config.js");
 const { DailyStorage } = require("./dailyStorage");
-const { MTZ } = require("./mtz");
+const { MTZ } = require("./mtz.js");
 const { WeiXin } = require("./weixin");
 
 const Robot = {
@@ -49,25 +49,12 @@ const Robot = {
     log("开始兑换");
     let userId = MTZ.getUserId();
     MTZ.exchange();
-    MTZ.transferScore();
-    sleep(2000);
-    MTZ.transferScore();
 
-    // 点击用户名输入框
-
-    AutojsUtil.clickEle(text("输入用户ID").findOne());
-    sleep(1000);
-    let numStrArr = (userId + "").split("");
-    for (numStr of numStrArr) {
-      AutojsUtil.inputNumIfRoot(numStr);
-    }
-
-    AutojsUtil.clickEle(text("输入提现密码").findOne());
-    sleep(1000);
-    let pw = "1234"; //todo 放到配置里面。或者写死
-    numStrArr = pw.split("");
-    for (numStr of numStrArr) {
-      AutojsUtil.inputNumIfRoot(numStr);
+    // 如果账号为，配置的账号。那么进行提现，否则进行积分转移
+    if (Config.withdrawUserId == userId) {
+      MTZ.payout2WeiXin(userId);
+    } else {
+      MTZ.transferScore(userId);
     }
   },
   changeNextAccount: function (cuAcc) {
@@ -119,6 +106,10 @@ const Robot = {
 
     // todo 签到，一般一天搞一次即可
 
+    if (!DailyStorage.yetTransferScoreToday()) {
+      this.exchange();
+    }
+
     if (!DailyStorage.yetSignToday()) {
       this.sign();
     } else {
@@ -130,7 +121,6 @@ const Robot = {
 
     if (DailyStorage.canReadNow()) {
       this.joinReadActive();
-      // this.exchange()
       sleep(1000);
     }
 
