@@ -256,9 +256,9 @@ function share() {
   WeiXin.sendTo("文件传输助手");
 }
 
-// build();
-// share();
+build();
+share();
 
 // WeiXin.sendTo("文件传输助手");
 
-Oppo.sendToWss();
+// Oppo.sendToWss();
