@@ -170,12 +170,19 @@ const Oppo = {
     sleep(500);
     click(text("通过文叔叔发送").findOne());
     sleep(500);
-    click(desc("发送").findOne());
-    let j = text("跳过").findOne(2000);
+
+    let j = descMatches(/(跳过.*)/)
+      .clickable(true)
+      .findOne(2000);
     if (j) {
       log("跳过广告");
-      click(j);
+      sleep(500);
+      // click(j);
+      j.click();
     }
+
+    sleep(800);
+    click(desc("发送").findOne());
 
     // 不存在，就一直等着
     while (!desc("上传中…").exists()) {
@@ -249,7 +256,9 @@ function share() {
   WeiXin.sendTo("文件传输助手");
 }
 
-build();
-share();
+// build();
+// share();
 
 // WeiXin.sendTo("文件传输助手");
+
+Oppo.sendToWss();

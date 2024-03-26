@@ -274,12 +274,18 @@ const MTZ = {
     return userId;
   },
   tryNotification: function () {
-    let e = text("我知道了").visibleToUser(true).findOne(2000);
+    let e = text("我知道了").visibleToUser(true).findOne(3000);
     if (e) {
       log("阅读公告");
       sleep(4000);
       log("点击 我知道了");
       AutojsUtil.clickEle(e);
+
+      e = text("我知道了").visibleToUser(true).findOne(1000);
+      if (e) {
+        log("再次点击");
+        AutojsUtil.clickEle(e);
+      }
     } else {
       log("没发现公告");
     }
