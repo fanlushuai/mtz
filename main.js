@@ -23,6 +23,11 @@ ui.emitter.on("resume", function () {
   revoverBootButton();
 });
 
+events.on("exit", function () {
+  log("强行停止，子脚本");
+  exectuion.forceStop();
+});
+
 ui.save.click(function () {
   log("保存配置");
   Config.setUI2LSConfig();

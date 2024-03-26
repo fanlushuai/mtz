@@ -65,19 +65,7 @@ const MTZ = {
   },
   helpEach: function () {
     log("互动活动");
-    // while (1) {
-    //     let e = text("互助活动").findOne(5 * 1000)
-    //     if (e) {
-    //         log("点击 互助活动")
-    //         AutojsUtil.clickEle(e)
-    //         break
-    //     } else {
-    //         log("没有找到")
-    //         WeiXin.refreshWeb()
-    //     }
-    // }
 
-    // sleep(1.5 * 1000)
     AutojsUtil.clickSelectorWithAutoRefresh(
       text("互助活动"),
       "互助活动",
@@ -89,6 +77,7 @@ const MTZ = {
     );
 
     // 莫名其妙，有时候会弹出来
+    sleep(1.5 * 1000);
     this.tryNotification();
   },
 
@@ -175,33 +164,6 @@ const MTZ = {
         break;
       }
     }
-
-    // let timesLimit = timesLimit || 20
-    // let doTimes = 0
-    // while (1) {
-
-    //     let publishTime = id("publish_time").findOne(10 * 1000)
-    //     if (publishTime) {
-    //         log("文章发布时间 %s", publishTime)
-
-    //         let randomNum = random(6, 8)
-    //         log("开始随机阅读 %s 秒", randomNum)
-    //         sleep(randomNum)
-    //         doTimes++
-    //         log("第 %s 次阅读", doTimes)
-    //         if (doTimes >= timesLimit) {
-    //             log("阅读次数达标")
-    //             break
-    //         }
-
-    //         log("切换文章")
-    //         back()
-    //         sleep(1000)
-    //     } else {
-    //         log("没有找到发布时间")
-    //         back()
-    //     }
-    // }
   },
   getQrPosition: function () {
     log("获取二维码粗略坐标");
@@ -324,86 +286,6 @@ const MTZ = {
   },
 };
 
-MTZ.exchange();
-MTZ.transferScore();
-
-// MTZ.getUserId()
-// MTZ.exchange()
-// MTZ.transferScore()
-// sleep(2000)
-// MTZ.transferScore()
-
-// log(find())
-
-// AutojsUtil.clickEle(text("输入用户ID").findOne())
-// let e=text("输入用户ID").findOne()
-// sleep(1000*1)
-// e.setText(dfdf)
-// e.input(1111)
-
-// log(desc("返回").findOne())
-// log(desc("@").findOne())
-// log(desc("下一步").findOne())
-
-// setText([0],"1111")
-// setText(1,"ddd")
-
-// AutojsUtil.clickEle(text("输入用户ID").findOne())
-// log("dfdf")
-// text("输入提现密码").findOne().setText("dfdfdfdf")
-
-// text("用户ID：1553733")
-
-// log(textMatches(/(用户ID：\d+)/).findOne())
-
-// log("开始")
-// let title = idMatches("activity-name").findOnce()
-// log(title)
-
-// // log(find())
-
-// // text("奖积分获取中请稍后")
-
-// log(text("奖积分获取中请稍后").findOnce())
-// MTZ.read(10)
-
 module.exports = {
   MTZ,
 };
-// MTZ.payout2WeiXin()
-// MTZ.transferScore()
-
-// text("创建密码(4位数字即可，建议手机号后4位)").findOne().setText("12312313")
-
-// back()
-
-// MTZ.helpEach()
-
-// log(text("文章阅读推荐").findOne().parent().find(text("开始活动"))
-// )
-
-// MTZ.activeRead()
-
-// MTZ.longPressQr()
-// MTZ.exchange()
-
-// MTZ.myPage()
-
-// log(text("活动获取中").findOne())
-
-// bounds("(140,1511,753,1565)") 1538
-// bounds("(774,1500,996,1573)") 1536.5
-
-// MTZ.sign()
-
-// AutojsUtil.clickSelectorWithAutoRefresh(text(""), "x", 10, this.name)
-
-// log(text("").visibleToUser(true).drawingOrder("0").indexInParent("0").depth("24").find())
-
-// AutojsUtil.clickEle(text("").visibleToUser(true).drawingOrder("0").indexInParent("0").depth("24").find())
-
-// boundsInParent: Rect(13, 12 - 45, 46); boundsInScreen: Rect(496, 1956 - 583, 2048);
-
-// boundsInParent: Rect(11, 10 - 39, 39); boundsInScreen: Rect(502, 1857 - 577, 1935); packageName:
-
-// boundsInParent: Rect(13, 12 - 45, 47); boundsInScreen: Rect(496, 2097 - 583, 2191); packageName: com.tencent.mm; className: android
