@@ -248,6 +248,7 @@ const MTZ = {
     sleep(4000); //todo 等待提现成功
 
     // 刷新，或者back吧
+    WeiXin.refreshWeb();
   },
   transferScore: function (userId) {
     log("--> 转移积分");

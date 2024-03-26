@@ -56,6 +56,8 @@ const Robot = {
     } else {
       MTZ.transferScore(userId);
     }
+
+    DailyStorage.setTransferScoreToday();
   },
   changeNextAccount: function (cuAcc) {
     let accArr = WeiXin.getAllAccount();
@@ -106,10 +108,6 @@ const Robot = {
 
     // todo 签到，一般一天搞一次即可
 
-    if (!DailyStorage.yetTransferScoreToday()) {
-      this.exchange();
-    }
-
     if (!DailyStorage.yetSignToday()) {
       this.sign();
     } else {
@@ -117,6 +115,11 @@ const Robot = {
     }
 
     sleep(1000);
+
+    if (!DailyStorage.yetTransferScoreToday()) {
+      this.exchange();
+    }
+
     // todo 参加活动，可以返回一下，还剩多少时间。方便任务高效调度。
 
     if (DailyStorage.canReadNow()) {
@@ -138,8 +141,13 @@ const Robot = {
       log("开始任务");
       Robot.currentAccount = WeiXin.wo();
       DailyStorage.currentAccount = Robot.currentAccount;
+      log("当前微信账号 %s", DailyStorage.currentAccount);
 
-      if (DailyStorage.yetSignToday() && !DailyStorage.canReadNow()) {
+      if (
+        DailyStorage.yetSignToday() &&
+        !DailyStorage.canReadNow() &&
+        DailyStorage.yetTransferScoreToday()
+      ) {
         log("此账号不需要任何操作");
       } else {
         this.jump2MTZ(); //跳入美添赚

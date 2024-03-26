@@ -63,7 +63,11 @@ const DailyStorage = {
     while (1) {
       for (let accont of accountArr) {
         DailyStorage.currentAccount = accont;
-        if (!DailyStorage.yetSignToday() || DailyStorage.canReadNow()) {
+        if (
+          !DailyStorage.yetSignToday() ||
+          DailyStorage.canReadNow() ||
+          !DailyStorage.yetTransferScoreToday()
+        ) {
           canA.push(accont);
         }
       }

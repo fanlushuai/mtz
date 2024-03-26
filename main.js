@@ -9,8 +9,6 @@ Config.setLSConfig2UI();
 
 AutojsUtil.autoServiceCheck();
 
-//todo 检测启动状态。是否还存在。来改变启动的按钮
-
 let exectuion;
 
 function revoverBootButton() {
