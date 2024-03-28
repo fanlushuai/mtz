@@ -3,13 +3,13 @@
 
 setlocal enabledelayedexpansion
 
-set PC_FOLDER_PATH=!cd!
-
-set PHONE_FOLDER_PATH=/storage/emulated/0/autojs/
+set PC_FOLDER_PATH=!cd!\.
+echo %PC_FOLDER_PATH%
 
 for %%* in (.) do set "CURRENT_FOLDER_NAME=%%~nx*"
 echo please set script path  autojs/%CURRENT_FOLDER_NAME% in android autojsx
 
+set PHONE_FOLDER_PATH=/storage/emulated/0/autojs/%CURRENT_FOLDER_NAME%
 set PHONE_BUILD_FOLDER_PATH=/storage/emulated/0/autojs/%CURRENT_FOLDER_NAME%/inHereBuild
 
 adb devices
