@@ -91,7 +91,18 @@ const WeiXin = {
     // 切换到哪个
   },
   getCurrentAccount: function () {
-    let accountEle = id("co1").findOne().parent().parent().findOne(id("dy"));
+    let e = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      id("co1"),
+      "当前账号",
+      10,
+      this.name,
+      () => {
+        AutojsUtil.refreshUI(appName);
+        AutojsUtil.pageDownBySwipe();
+      }
+    );
+
+    let accountEle = e.parent().parent().findOne(id("dy"));
     // log(accountEle)
     if (accountEle) {
       return accountEle.text();
