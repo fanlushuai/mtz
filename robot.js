@@ -34,6 +34,8 @@ const Robot = {
 
       WeiXin.longPressPic(qrPosition.x, qrPosition.y); //减去头部  ！！！！！非常重要
       WeiXin.jumpByqrCode(function () {
+        MTZ.tryNotification();
+        let qrPosition = MTZ.getQrPosition();
         WeiXin.longPressPic(qrPosition.x, qrPosition.y);
       });
 

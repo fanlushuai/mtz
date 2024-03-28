@@ -66,7 +66,7 @@ const MTZ = {
   helpEach: function () {
     log("互动活动");
 
-    AutojsUtil.clickSelectorWithAutoRefresh(
+    let e = AutojsUtil.getEleBySelectorWithAutoRefresh(
       text("互助活动"),
       "互助活动",
       10,
@@ -75,6 +75,19 @@ const MTZ = {
         WeiXin.refreshWeb();
       }
     );
+
+    log("点 互助活动");
+    AutojsUtil.clickEle(e.parent());
+
+    // AutojsUtil.clickSelectorWithAutoRefresh(
+    //   text("互助活动"),
+    //   "互助活动",
+    //   10,
+    //   "微信",
+    //   function () {
+    //     WeiXin.refreshWeb();
+    //   }
+    // );
 
     // 莫名其妙，有时候会弹出来
     sleep(1.5 * 1000);

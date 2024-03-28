@@ -462,6 +462,23 @@ const AutojsUtil = {
     KeyCode(keyCodeStr);
     sleep(500);
   },
+  isInScreen: function (ele) {
+    if (ele) {
+      let r = ele.bounds();
+      return (
+        device.width > r.right &&
+        r.right >= 0 &&
+        device.width > r.left &&
+        r.left >= 0 &&
+        device.height > r.top &&
+        r.top >= 0 &&
+        device.height > r.bottom &&
+        r.bottom >= 0
+      );
+    }
+
+    return false;
+  },
 };
 
 module.exports = {

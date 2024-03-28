@@ -77,6 +77,7 @@ const Autojsx = {
     pageUpBySwipe();
 
     toast("老板，打包完成！！");
+    sleep(1000);
   },
   share: function () {
     let x = id("sort").findOne().bounds().centerX();
