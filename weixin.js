@@ -157,6 +157,9 @@ const WeiXin = {
     sleep(1500);
   },
   back2Settings: function () {
+    // 有时候无脑back会失败。所以，尝试刷新一下，再搞
+    WeiXin.refreshWeb();
+
     AutojsUtil.testAndBack(function () {
       // return id("title").text("设置").findOnce() != null
 
