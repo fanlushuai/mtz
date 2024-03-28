@@ -283,7 +283,7 @@ const MTZ = {
       8,
       "微信",
       function () {
-        AutojsUtil.refreshWeb();
+        WeiXin.refreshWeb();
       }
     );
 
