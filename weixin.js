@@ -108,7 +108,6 @@ const WeiXin = {
     let allAccountEles = id("dy").find();
     let acArr = [];
     for (let aE of allAccountEles) {
-      log("账号- %s", aE.text());
       acArr.push(aE.text());
     }
 

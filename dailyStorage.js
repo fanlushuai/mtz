@@ -58,7 +58,7 @@ const DailyStorage = {
     return true;
   },
   canDoAccounts: function (accountArr) {
-    log("阻塞等待，存在有效动作的账号");
+    log("寻找可执行动作账号");
     let canA = [];
     while (1) {
       for (let accont of accountArr) {
@@ -71,7 +71,7 @@ const DailyStorage = {
           canA.push(accont);
         }
       }
-      log("获取所有具备有效动作的账号 %s", canA);
+      log("找到有效动作账号： %s", canA);
 
       if (canA.length > 0) {
         break;
