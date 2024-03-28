@@ -63,7 +63,7 @@ const WeiXin = {
       func
     );
     let b = ele.bounds();
-    log("点击，识别图中的二维码");
+    log("点 识别图中的二维码");
     press(b.centerX(), b.centerY(), 100);
   },
 
@@ -99,7 +99,7 @@ const WeiXin = {
   },
   getAllAccount: function () {
     // fix 账号可能很多，还需要滚动屏幕
-    AutojsUtil.pageUpBySwipe()
+    AutojsUtil.pageUpBySwipe();
 
     sleep(1000);
 
@@ -134,8 +134,8 @@ const WeiXin = {
     AutojsUtil.waitFor(id("icon_tv").text("通讯录").visibleToUser(true), 30);
 
     if (text("轻触头像以切换账号").exists()) {
-      log("没有登陆成功")
-      return false
+      log("没有登陆成功");
+      return false;
     }
 
     log("到达首页，切换成功");

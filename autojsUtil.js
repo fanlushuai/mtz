@@ -153,7 +153,6 @@ const AutojsUtil = {
     }
   },
   retryGet: function (func, retryLimit) {
-    let retryLimit = retryLimit;
     let tryCount = 0;
     while (1) {
       let result = func();
@@ -174,7 +173,7 @@ const AutojsUtil = {
     refreshMethod
   ) {
     let ele = this.retryGet(function () {
-      log("查找 %s", targetName);
+      log("查 %s", targetName);
       let e = selector.findOne(findTimeLimitSec * 1000);
       if (e) {
         return e;
@@ -219,14 +218,14 @@ const AutojsUtil = {
       return false;
     }
 
-    log("点击 %s", targetName);
+    log("点 %s", targetName);
     return AutojsUtil.clickEle(ele);
   },
   clickSelector: function (selector, targetName) {
     let e = selector.findOne(15000);
     sleep(100);
     if (e) {
-      log("点击 %s", targetName);
+      log("点 %s", targetName);
       return this.clickEle(e);
     } else {
       toast("选择器查找失败");
@@ -238,7 +237,7 @@ const AutojsUtil = {
     let e = selector.findOne(15000);
     sleep(100);
     if (e) {
-      log("点击 %s", targetName);
+      log("点 %s", targetName);
       return this.press(e);
     } else {
       toast("选择器查找失败");
@@ -395,7 +394,7 @@ const AutojsUtil = {
       let dw = device.width;
       let dh = device.height;
       let cw = (dw * 4) / 10;
-      let ch = (dh * 3) / 8;
+      let ch = (dh * 2) / 8;
 
       console.setTitle(title || "");
       console.show(true);
@@ -422,6 +421,9 @@ const AutojsUtil = {
 
       sleep(500);
     }
+  },
+  showPoint(x, y) {
+    this.showPoint({ x: x, y: y });
   },
   showPoint(p) {
     let w = floaty.rawWindow(

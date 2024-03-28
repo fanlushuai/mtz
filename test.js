@@ -1,5 +1,7 @@
 // // const { WeiXin } = require("./weixin");
 
+const { AutojsUtil } = require("./autojsUtil");
+
 // // let accArr = WeiXin.getAllAccount();
 // // log(accArr);
 
@@ -27,5 +29,25 @@
 
 // engines.stopAll();
 
-AutojsUtil.pageDownBySwipe();
+// AutojsUtil.pageDownBySwipe();
 
+// log(text("文章阅读推荐").find());
+
+// function getTop() {
+//   let a = text("文章阅读推荐").visibleToUser(true).find();
+//   for (let b of a) {
+//     let c = b.parent().find(text("每日可领取600-1200"));
+//     if (c.size() == 0) {
+//       // log(b.bounds());
+//       return b.bounds().top;
+//     }
+//   }
+// }
+
+// let top = getTop();
+// let buttom = text("长按识别开始阅读").findOne().bounds().top;
+// log(buttom);
+// let x = device.width / 2;
+// let y = top + (buttom - top) / 2;
+
+// AutojsUtil.showPoint(100, 200);
