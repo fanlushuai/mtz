@@ -3,7 +3,7 @@
 
 setlocal enabledelayedexpansion
 
-set PC_FOLDER_PATH="E:\code\mtz"
+set PC_FOLDER_PATH="D:\github\mtz"
 
 set PHONE_FOLDER_PATH=/storage/emulated/0/autojs/
 

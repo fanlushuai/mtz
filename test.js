@@ -25,4 +25,7 @@
 // //   a.setText("1553733"); //1553733
 // // }
 
-engines.stopAll();
+// engines.stopAll();
+
+AutojsUtil.pageDownBySwipe();
+

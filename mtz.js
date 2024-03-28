@@ -134,11 +134,7 @@ const MTZ = {
           DailyStorage.setReadNextTime(futureTime);
         }
         return false;
-        // let leftEles = ele.parent().find(textMatches("剩余"))
-        // if (leftEles) {
-        //     log("活动已经参与 %s", leftEles[0].getText())
-        //     return false
-        // }
+
       }
     }
   },
