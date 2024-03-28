@@ -98,9 +98,8 @@ const WeiXin = {
     }
   },
   getAllAccount: function () {
-    // fix 账号可能很多，还需要滚动屏幕
-    AutojsUtil.pageUpBySwipe();
-
+    // 账号可能很多，还需要滚动屏幕
+    AutojsUtil.pageDownBySwipe();
     sleep(1000);
 
     AutojsUtil.refreshUI("微信");

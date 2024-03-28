@@ -29,7 +29,7 @@ const { AutojsUtil } = require("./autojsUtil");
 
 // engines.stopAll();
 
-// AutojsUtil.pageDownBySwipe();
+AutojsUtil.pageDownBySwipe();
 
 // log(text("文章阅读推荐").find());
 

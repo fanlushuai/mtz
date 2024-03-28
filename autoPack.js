@@ -182,7 +182,9 @@ const Oppo = {
     }
 
     sleep(800);
-    click(desc("发送").findOne());
+    let e = desc("发送").findOne();
+    sleep(1500); //排除，悬浮气泡提示
+    click(e);
 
     // 不存在，就一直等着
     while (!desc("上传中…").exists()) {
