@@ -99,6 +99,8 @@ const WeiXin = {
   },
   getAllAccount: function () {
     // fix 账号可能很多，还需要滚动屏幕
+    AutojsUtil.pageUpBySwipe()
+
     sleep(1000);
 
     AutojsUtil.refreshUI("微信");
@@ -118,32 +120,26 @@ const WeiXin = {
 
     sleep(1000);
 
-    // AutojsUtil.refreshUI("微信")
-
-    // id("co1")
-    // while (text("正在退出...").exists()) {
-    //     sleep(1000)
-    // }
-    // log("已退出")
-    // while (text("正在登录...").exists()) {
-    //     sleep(1000)
-    // }
-    // log("已登陆")
-
-    // idMatches("otg").waitFor() //todo 达到首页
-
     // 可能出现登陆失效
     let logniExpired = AutojsUtil.waitFor(id("iol").text("登录"), 30);
     if (logniExpired) {
-      log("登陆失效");
+      log("登陆失效 %s", name);
       sleep(1000);
       back(); //后退一下
       sleep(1000);
       return false;
     }
 
-    AutojsUtil.waitFor(id("icon_tv").text("通讯录"), 30);
+    // 找通讯录的方式，不靠谱。在没有登陆界面，依然可以看到
+    AutojsUtil.waitFor(id("icon_tv").text("通讯录").visibleToUser(true), 30);
+
+    if (text("轻触头像以切换账号").exists()) {
+      log("没有登陆成功")
+      return false
+    }
+
     log("到达首页，切换成功");
+
     sleep(2000);
     return true;
   },
