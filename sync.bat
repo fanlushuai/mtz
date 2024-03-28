@@ -3,11 +3,14 @@
 
 setlocal enabledelayedexpansion
 
-set PC_FOLDER_PATH="D:\github\mtz"
+set PC_FOLDER_PATH=!cd!
 
 set PHONE_FOLDER_PATH=/storage/emulated/0/autojs/
 
-set PHONE_BUILD_FOLDER_PATH=/storage/emulated/0/autojs/mtz/inHereBuild
+for %%* in (.) do set "CURRENT_FOLDER_NAME=%%~nx*"
+echo please set script path  autojs/%CURRENT_FOLDER_NAME% in android autojsx
+
+set PHONE_BUILD_FOLDER_PATH=/storage/emulated/0/autojs/%CURRENT_FOLDER_NAME%/inHereBuild
 
 adb devices
  
@@ -18,6 +21,10 @@ if %errorlevel% neq 0 (
     pause
     exit
 )
+
+@REM echo "%PC_FOLDER_PATH%"
+@REM echo "%PHONE_FOLDER_PATH%"
+@REM echo "%PHONE_BUILD_FOLDER_PATH%"
 
 adb shell mkdir -p "%PHONE_FOLDER_PATH%"
 adb push "%PC_FOLDER_PATH%" "%PHONE_FOLDER_PATH%"
