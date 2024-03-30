@@ -30,11 +30,13 @@ const Robot = {
     if (MTZ.activeRead()) {
       let qrPosition = MTZ.getQrPosition();
 
-      // AutojsUtil.showPoint(qrPosition)
+      // AutojsUtil.showPoint(qrPosition);
 
-      WeiXin.longPressPic(qrPosition.x, qrPosition.y - 150); //减去头部  ！！！！！非常重要
+      WeiXin.longPressPic(qrPosition.x, qrPosition.y); //减去头部  ！！！！！非常重要
       WeiXin.jumpByqrCode(function () {
-        WeiXin.longPressPic(qrPosition.x, qrPosition.y - 150);
+        MTZ.tryNotification();
+        let qrPosition = MTZ.getQrPosition();
+        WeiXin.longPressPic(qrPosition.x, qrPosition.y);
       });
 
       // 3秒反应，进入文章。

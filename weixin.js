@@ -63,7 +63,7 @@ const WeiXin = {
       func
     );
     let b = ele.bounds();
-    log("点击，识别图中的二维码");
+    log("点 识别图中的二维码");
     press(b.centerX(), b.centerY(), 100);
   },
 
@@ -91,16 +91,26 @@ const WeiXin = {
     // 切换到哪个
   },
   getCurrentAccount: function () {
-    let accountEle = id("co1").findOne().parent().parent().findOne(id("dy"));
+    let e = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      id("co1"),
+      "当前账号",
+      10,
+      this.name,
+      () => {
+        AutojsUtil.refreshUI(appName);
+        AutojsUtil.pageDownBySwipe();
+      }
+    );
+
+    let accountEle = e.parent().parent().findOne(id("dy"));
     // log(accountEle)
     if (accountEle) {
       return accountEle.text();
     }
   },
   getAllAccount: function () {
-    // fix 账号可能很多，还需要滚动屏幕
-    AutojsUtil.pageUpBySwipe()
-
+    // 账号可能很多，还需要滚动屏幕
+    AutojsUtil.pageDownBySwipe();
     sleep(1000);
 
     AutojsUtil.refreshUI("微信");
@@ -108,7 +118,6 @@ const WeiXin = {
     let allAccountEles = id("dy").find();
     let acArr = [];
     for (let aE of allAccountEles) {
-      log("账号- %s", aE.text());
       acArr.push(aE.text());
     }
 
@@ -134,8 +143,8 @@ const WeiXin = {
     AutojsUtil.waitFor(id("icon_tv").text("通讯录").visibleToUser(true), 30);
 
     if (text("轻触头像以切换账号").exists()) {
-      log("没有登陆成功")
-      return false
+      log("没有登陆成功");
+      return false;
     }
 
     log("到达首页，切换成功");
@@ -153,6 +162,9 @@ const WeiXin = {
     sleep(1500);
   },
   back2Settings: function () {
+    // 有时候无脑back会失败。所以，尝试刷新一下，再搞
+    WeiXin.refreshWeb();
+
     AutojsUtil.testAndBack(function () {
       // return id("title").text("设置").findOnce() != null
 

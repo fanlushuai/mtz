@@ -16,7 +16,7 @@ const MTZ = {
     while (1) {
       let e = text("我的主页").findOne(3 * 1000);
       if (e) {
-        log("点击 我的主页");
+        log("点 我的主页");
         AutojsUtil.clickEle(e.parent());
 
         sleep(2000);
@@ -40,7 +40,7 @@ const MTZ = {
       if (ele) {
         let eles = ele.parent().find(text("点击领取"));
         if (eles) {
-          log("点击 点击领取");
+          log("点 点击领取");
           AutojsUtil.clickEle(eles[0]);
 
           // 签到成功，会有弹窗
@@ -66,7 +66,7 @@ const MTZ = {
   helpEach: function () {
     log("互动活动");
 
-    AutojsUtil.clickSelectorWithAutoRefresh(
+    let e = AutojsUtil.getEleBySelectorWithAutoRefresh(
       text("互助活动"),
       "互助活动",
       10,
@@ -75,6 +75,19 @@ const MTZ = {
         WeiXin.refreshWeb();
       }
     );
+
+    log("点 互助活动");
+    AutojsUtil.clickEle(e.parent());
+
+    // AutojsUtil.clickSelectorWithAutoRefresh(
+    //   text("互助活动"),
+    //   "互助活动",
+    //   10,
+    //   "微信",
+    //   function () {
+    //     WeiXin.refreshWeb();
+    //   }
+    // );
 
     // 莫名其妙，有时候会弹出来
     sleep(1.5 * 1000);
@@ -134,7 +147,6 @@ const MTZ = {
           DailyStorage.setReadNextTime(futureTime);
         }
         return false;
-
       }
     }
   },
@@ -163,12 +175,23 @@ const MTZ = {
   },
   getQrPosition: function () {
     log("获取二维码粗略坐标");
-    let t2 = text("长按识别开始阅读").findOne();
-    let t1 = text("240积分/轮").visibleToUser(true).findOne(); //这个要放在上面的下面。因为，平面上也有，弹窗上也有
 
+    function getTop() {
+      let a = text("文章阅读推荐").visibleToUser(true).find();
+      for (let b of a) {
+        let c = b.parent().find(text("每日可领取600-1200"));
+        if (c.size() == 0) {
+          // log(b.bounds());
+          return b.bounds().top;
+        }
+      }
+    }
+
+    let top = getTop();
+    let buttom = text("长按识别开始阅读").findOne().bounds().top;
+    log(buttom);
     let qrX = device.width / 2;
-    let qrY =
-      t1.bounds().top + parseInt((t2.bounds().top - t1.bounds().top) / 2);
+    let qrY = top + (buttom - top) / 2;
 
     return { x: qrX, y: qrY };
   },
@@ -260,7 +283,7 @@ const MTZ = {
       8,
       "微信",
       function () {
-        AutojsUtil.refreshWeb();
+        WeiXin.refreshWeb();
       }
     );
 
@@ -270,17 +293,17 @@ const MTZ = {
     return userId;
   },
   tryNotification: function () {
-    let e = text("我知道了").visibleToUser(true).findOne(3000);
+    let e = text("我知道了").visibleToUser(true).clickable(true).findOne(3000);
     if (e) {
       log("阅读公告");
       sleep(4000);
-      log("点击 我知道了");
+      log("点 我知道了");
       AutojsUtil.clickEle(e);
 
-      e = text("我知道了").visibleToUser(true).findOne(1000);
+      e = text("我知道了").visibleToUser(true).clickable(true).findOne(1000);
       if (e) {
         log("再次点击");
-        AutojsUtil.clickEle(e);
+        AutojsUtil.press(e);
       }
     } else {
       log("没发现公告");
