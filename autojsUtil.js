@@ -278,22 +278,27 @@ const AutojsUtil = {
     app.launchApp(appName);
     sleep(2000);
   },
-  testAndBack: function (testGetTargetFunc, timesLimit) {
+  testAndBack: function (testGetTargetFunc, timesLimit, backFunc) {
     log("无脑back");
     let retryTimes = timesLimit;
     let tryCount = 0;
     while (1) {
       if (testGetTargetFunc()) {
         log("退回成功");
-        break;
+        return true;
       } else {
-        back();
+        if (backFunc) {
+          backFunc();
+        } else {
+          back();
+        }
+
         sleep(800);
         tryCount++;
         log("back [%s/%s]", tryCount, retryTimes);
         if (tryCount > retryTimes) {
           console.warn("无脑退回失败");
-          break;
+          return false;
         }
       }
     }

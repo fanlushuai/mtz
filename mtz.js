@@ -277,15 +277,23 @@ const MTZ = {
     }
   },
   getUserId: function () {
-    let userIDELe = AutojsUtil.getEleBySelectorWithAutoRefresh(
-      textMatches(/(用户ID.*)/),
-      "获取用户id",
-      8,
-      "微信",
-      function () {
-        WeiXin.refreshWeb();
+    let userIDELe;
+    while (1) {
+      userIDELe = AutojsUtil.getEleBySelectorWithAutoRefresh(
+        textMatches(/(用户ID.*)/),
+        "获取用户id",
+        8,
+        "微信",
+        function () {
+          WeiXin.refreshWeb();
+          sleep(2000);
+        }
+      );
+
+      if (userIDELe) {
+        break;
       }
-    );
+    }
 
     let userId = userIDELe.text().replace("用户ID：", "");
 

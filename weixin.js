@@ -165,16 +165,20 @@ const WeiXin = {
     // 有时候无脑back会失败。所以，尝试刷新一下，再搞
     WeiXin.refreshWeb();
 
-    AutojsUtil.testAndBack(function () {
-      // return id("title").text("设置").findOnce() != null
+    AutojsUtil.testAndBack(
+      function () {
+        // return id("title").text("设置").findOnce() != null
 
-      // return text("发现").findOnce() != null
-      // return id("ouv").findOnce() != null
-      return (
-        text("收藏").id("android:id/title").visibleToUser(true).findOnce() !=
-        null
-      );
-    }, 10);
+        // return text("发现").findOnce() != null
+        // return id("ouv").findOnce() != null
+        return (
+          text("收藏").id("android:id/title").visibleToUser(true).findOnce() !=
+          null
+        );
+      },
+      10,
+      WeiXin.backTab
+    );
   },
   back2SettingsFromAcc: function () {
     this.backTab();
