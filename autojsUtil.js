@@ -572,7 +572,8 @@ const AutojsUtil = {
     }
   },
   reloadScriptEngine: function (scriptFullPath) {
-    stopScriptEngine(scriptFullPath);
+    this.stopScriptEngine(scriptFullPath);
+    sleep(2000);
     exectuion = engines.execScriptFile(scriptFullPath); //简单的例子
   },
 };
