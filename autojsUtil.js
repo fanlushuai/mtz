@@ -78,9 +78,9 @@ const AutojsUtil = {
 
     setInterval(() => {}, 1000);
 
-    var x, y, windowX, windowY, downTime;
+    let x, y, windowX, windowY, downTime;
     window.action.setOnTouchListener(function (view, event) {
-      var callProp0 = event.getAction();
+      let callProp0 = event.getAction();
       if (event.ACTION_DOWN === callProp0) {
         x = event.getRawX();
         y = event.getRawY();
@@ -189,10 +189,16 @@ const AutojsUtil = {
           AutojsUtil.refreshUI(appName);
         }
       }
-    }, 5);
+    }, 15);
 
     if (!ele) {
-      alert("选择器查找失败");
+      // alert("选择器查找失败");
+      console.warn("选择器查找失败，重启");
+      // 杀掉app，重启app
+      AutojsUtil.reloadApp("微信");
+      sleep(3000);
+      // 重新开始执行
+      AutojsUtil.reloadScriptEngine("./scriptTask.js");
       return;
     }
 
@@ -329,18 +335,18 @@ const AutojsUtil = {
     return excuteOK;
   },
   loadUI: function (scriptName, projectJsonPath, uiPath) {
-    var projectJsonStr = files.read(projectJsonPath).toString();
-    var projectData = JSON.parse(projectJsonStr);
+    let projectJsonStr = files.read(projectJsonPath).toString();
+    let projectData = JSON.parse(projectJsonStr);
 
-    var version = "1.0.0    --- " + (projectData.updateTime || "");
-    var themeColor = "#FF3123";
-    var scriptTitle = scriptName + " v" + version;
+    let version = "1.0.0    --- " + (projectData.updateTime || "");
+    let themeColor = "#FF3123";
+    let scriptTitle = scriptName + " v" + version;
 
     // AutoX.unLockIfNeed("888888");
     // const storage = storageUI("UIConfigInfo");
 
-    var ScriptUIAllStr = files.read(uiPath).toString();
-    var ScriptUIStr = ScriptUIAllStr.replace(/项目标题/g, scriptTitle).replace(
+    let ScriptUIAllStr = files.read(uiPath).toString();
+    let ScriptUIStr = ScriptUIAllStr.replace(/项目标题/g, scriptTitle).replace(
       /#4EBFDD/g,
       themeColor
     );
@@ -378,20 +384,20 @@ const AutojsUtil = {
     });
   },
   pageUpBySwipe: function () {
-    var h = device.height; //屏幕高
-    var w = device.width; //屏幕宽
-    var x = random((w * 1) / 3, (w * 2) / 3); //横坐标随机。防止检测。
-    var h1 = (h / 6) * 5; //纵坐标6分之5处
-    var h2 = h / 6; //纵坐标6分之1处
+    let h = device.height; //屏幕高
+    let w = device.width; //屏幕宽
+    let x = random((w * 1) / 3, (w * 2) / 3); //横坐标随机。防止检测。
+    let h1 = (h / 6) * 5; //纵坐标6分之5处
+    let h2 = h / 6; //纵坐标6分之1处
     swipe(x, h2, x, h1, 500); //向上翻页(从纵坐标6分之1处拖到纵坐标6分之5处)
   },
   pageDownBySwipe: function () {
-    var h = device.height; //屏幕高
-    var w = device.width; //屏幕宽
-    // var x = (w / 3) * 2; //横坐标2/3处。
-    var x = random((w * 2) / 5, (w * 3) / 5); //横坐标随机。防止检测。
-    var h1 = (h / 6) * 5; //纵坐标6分之5处
-    var h2 = h / 6; //纵坐标6分之1处
+    let h = device.height; //屏幕高
+    let w = device.width; //屏幕宽
+    // let x = (w / 3) * 2; //横坐标2/3处。
+    let x = random((w * 2) / 5, (w * 3) / 5); //横坐标随机。防止检测。
+    let h1 = (h / 6) * 5; //纵坐标6分之5处
+    let h2 = h / 6; //纵坐标6分之1处
     swipe(x, h1, x, h2, 500); //向下翻页(从纵坐标6分之5处拖到纵坐标6分之1处)
   },
   configConsole: (title) => {
@@ -483,6 +489,91 @@ const AutojsUtil = {
     }
 
     return false;
+  },
+  reloadApp: function (appName) {
+    console.log("强制重启 %s", appName);
+    this.killApp(appName);
+    app.launchApp(appName);
+  },
+  killApp: function (name) {
+    let packageName = getPackageName(name) || getAppName(name);
+    if (!packageName) {
+      log("找不到packageName" + packageName);
+      return;
+    }
+
+    // 打开系统级应用设置  https://github.com/kkevsekk1/AutoX/issues/706
+
+    let textName = app.getAppName(packageName);
+    let settingsOpenedFlag = false;
+    // 强化版本，有时候，确实打不开不知道为何。非常偶然，但是确实会
+    while (1) {
+      log("打开 %s 设置", textName);
+
+      app.openAppSetting(packageName);
+      startTime = currentTime();
+      while (currentTime() - startTime < 6000) {
+        sleep(500);
+        if (text(textName).exists()) {
+          settingsOpenedFlag = true;
+          break;
+        }
+      }
+
+      if (settingsOpenedFlag) {
+        break;
+      }
+    }
+
+    log("进行盲点");
+    // 执行盲点流程 （多点几次不过分。都是非阻塞的。）
+    let timeLimit = 3;
+    let times = 0; // 多点几次，应对页面上存在一些其他tips文字，干扰流程。
+    do {
+      times++;
+      if (stop()) {
+        log("%s 次 搞定", times);
+        break;
+      }
+    } while (times < timeLimit);
+
+    sleep(random(800, 1000));
+    back();
+
+    // 盲点
+    function stop() {
+      let is_sure = textMatches(
+        /(.{0,3}强.{0,3}|.{0,3}停.{0,3}|.{0,3}结.{0,3}|.{0,3}行.{0,3})/
+      ).findOnce();
+      if (is_sure) {
+        is_sure.click();
+        sleep(random(500, 600));
+      }
+
+      let b = textMatches(/(.*确.*|.*定.*)/).findOnce();
+      if (b) {
+        b.click();
+        sleep(random(500, 600));
+        return true;
+      }
+    }
+  },
+  stopScriptEngine: function (scriptFullPath) {
+    let engines = engines.all();
+    // let scriptEngine = "/storage/emulated/0/脚本/测试.js";
+    let scriptEngine = scriptFullPath;
+    for (let i = 0; i < engines.length; i++) {
+      let e = engines[i];
+      log(e.source);
+      if (e.source == scriptEngine) {
+        toastLog("完成结束：" + e.source);
+        e.forceStop();
+      }
+    }
+  },
+  reloadScriptEngine: function (scriptFullPath) {
+    stopScriptEngine(scriptFullPath);
+    exectuion = engines.execScriptFile(scriptFullPath); //简单的例子
   },
 };
 

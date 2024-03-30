@@ -55,13 +55,21 @@ const WeiXin = {
   jumpByqrCode: function (func) {
     // fix 卡住
     sleep(1.5 * 1000);
-    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
-      text("识别图中的二维码"),
-      "识别图中的二维码",
-      10,
-      this.name,
-      func
-    );
+    let ele;
+    while (1) {
+      ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
+        text("识别图中的二维码"),
+        "识别图中的二维码",
+        10,
+        this.name,
+        func
+      );
+
+      if (ele) {
+        break;
+      }
+    }
+
     let b = ele.bounds();
     log("点 识别图中的二维码");
     press(b.centerX(), b.centerY(), 100);

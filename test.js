@@ -32,9 +32,9 @@ const { AutojsUtil } = require("./autojsUtil");
 // AutojsUtil.pageDownBySwipe();
 // log(text("互助活动").findOne().parent());
 
-let e = text("我知道了").visibleToUser(true).clickable(true).findOne(3000);
-log(AutojsUtil.isInScreen(e));
-log(e);
+// let e = text("我知道了").visibleToUser(true).clickable(true).findOne(3000);
+// log(AutojsUtil.isInScreen(e));
+// log(e);
 // log(text("文章阅读推荐").find());
 
 // function getTop() {
