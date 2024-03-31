@@ -8,7 +8,8 @@ const WeiXin = {
   },
   wo: function () {
     AutojsUtil.clickSelectorWithAutoRefresh(text("我"), "我", 10, this.name);
-    return id("ouv").findOne().getText().replace("微信号：", "");
+    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(id("ouv"), "微信号", 10, this.name)
+    return ele.getText().replace("微信号：", "");
   },
   intoStarDir: function () {
     AutojsUtil.clickSelectorWithAutoRefresh(
