@@ -11,3 +11,5 @@ Config.loadConfig();
 AutojsUtil.AddFloatContrlButton(function () {
   Robot.start();
 });
+
+

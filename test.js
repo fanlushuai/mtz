@@ -55,3 +55,28 @@ const { AutojsUtil } = require("./autojsUtil");
 // let y = top + (buttom - top) / 2;
 
 // AutojsUtil.showPoint(100, 200);
+
+// threads.start(function () {
+//     log("启动脚本引擎");
+
+
+
+//     exectuion = engines.execScriptFile("./scriptTask.js"); //简单的例子
+// });
+
+// setInterval(() => { }, 1000)
+
+// AutojsUtil.reloadScriptEngine("./scriptTask.js")
+
+let excution=AutojsUtil.execScriptFile("./scriptTask.js")
+
+events.broadcast.on("hello", function (name) {
+    toastLog("你好,xxxxxxxxxxxxxxx " + name);
+    AutojsUtil.stopCurrentScriptEngine()
+    excution.forceStop();
+  });
+
+
+// todo 发送通知
+
+

@@ -76,7 +76,7 @@ const AutojsUtil = {
 
     window.exitOnClose(); //注册退出，退出脚本
 
-    setInterval(() => {}, 1000);
+    setInterval(() => { }, 1000);
 
     let x, y, windowX, windowY, downTime;
     window.action.setOnTouchListener(function (view, event) {
@@ -189,7 +189,7 @@ const AutojsUtil = {
           AutojsUtil.refreshUI(appName);
         }
       }
-    }, 15);
+    }, 3);
 
     if (!ele) {
       // alert("选择器查找失败");
@@ -198,7 +198,9 @@ const AutojsUtil = {
       AutojsUtil.reloadApp("微信");
       sleep(3000);
       // 重新开始执行
-      AutojsUtil.reloadScriptEngine("./scriptTask.js");
+      AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 })
+
+      AutojsUtil.stopCurrentScriptEngine();
       return;
     }
 
@@ -220,7 +222,7 @@ const AutojsUtil = {
     );
 
     if (!ele) {
-      alert("选择器查找失败"); //醒目提醒一下，如果经常这样，就需要改代码了
+      // alert("选择器查找失败"); //醒目提醒一下，如果经常这样，就需要改代码了
       return false;
     }
 
@@ -444,7 +446,7 @@ const AutojsUtil = {
     );
     w.setTouchable(false);
     w.setSize(-1, -1);
-    setInterval(() => {}, 1000);
+    setInterval(() => { }, 1000);
 
     let paint = new Paint();
     //设置画笔为填充，则绘制出来的图形都是实心的
@@ -511,8 +513,8 @@ const AutojsUtil = {
       log("打开 %s 设置", textName);
 
       app.openAppSetting(packageName);
-      startTime = currentTime();
-      while (currentTime() - startTime < 6000) {
+      startTime = new Date().getTime();
+      while (new Date().getTime() - startTime < 6000) {
         sleep(500);
         if (text(textName).exists()) {
           settingsOpenedFlag = true;
@@ -558,23 +560,18 @@ const AutojsUtil = {
       }
     }
   },
-  stopScriptEngine: function (scriptFullPath) {
-    let engines = engines.all();
-    // let scriptEngine = "/storage/emulated/0/脚本/测试.js";
-    let scriptEngine = scriptFullPath;
-    for (let i = 0; i < engines.length; i++) {
-      let e = engines[i];
-      log(e.source);
-      if (e.source == scriptEngine) {
-        toastLog("完成结束：" + e.source);
-        e.forceStop();
+  stopCurrentScriptEngine: function () {
+    engines.all().map((ScriptEngine) => {
+      if (engines.myEngine().toString() == ScriptEngine.toString()) {
+        log("停止当前脚本引擎 %s", engines.myEngine().toString())
+        ScriptEngine.forceStop();
       }
-    }
+    });
   },
-  reloadScriptEngine: function (scriptFullPath) {
-    this.stopScriptEngine(scriptFullPath);
+  execScriptFile: function (scriptFullPath, config) {
+    exectuion = engines.execScriptFile(scriptFullPath, config); //简单的例子
     sleep(2000);
-    exectuion = engines.execScriptFile(scriptFullPath); //简单的例子
+    return exectuion
   },
 };
 
