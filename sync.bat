@@ -17,7 +17,7 @@ adb devices
 :devicecheck
 adb get-state | find "device"
 if %errorlevel% neq 0 (
-    echo device can not found £¬please check your connect
+    echo device can not found please check your connect
     pause
     exit
 )

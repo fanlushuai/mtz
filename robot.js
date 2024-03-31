@@ -143,6 +143,7 @@ const Robot = {
       log("开始任务");
       Robot.currentAccount = WeiXin.wo();
       DailyStorage.currentAccount = Robot.currentAccount;
+      
       log("当前微信账号 %s", DailyStorage.currentAccount);
 
       if (
