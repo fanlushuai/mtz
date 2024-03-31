@@ -189,7 +189,7 @@ const AutojsUtil = {
           AutojsUtil.refreshUI(appName);
         }
       }
-    }, 3);
+    }, 8);
 
     if (!ele) {
       // alert("选择器查找失败");

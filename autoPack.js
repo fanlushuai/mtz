@@ -182,9 +182,8 @@ const Oppo = {
       j.click();
     }
 
-    sleep(800);
     let e = desc("发送").findOne();
-    sleep(1500); //排除，悬浮气泡提示
+    sleep(2000); //排除，悬浮气泡提示
     click(e);
 
     // 不存在，就一直等着
