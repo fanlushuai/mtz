@@ -109,6 +109,8 @@ const MTZ = {
       }
     );
 
+    let maxRetryTimes = 5;
+    let retry = 0
     while (1) {
       let eles = ele.parent().find(text("开始活动"));
       if (eles && eles.length > 0) {
@@ -121,6 +123,19 @@ const MTZ = {
         if (AutojsUtil.waitFor(text("长按识别开始阅读"), 4)) {
           log("发现二维码弹窗");
           return true;
+        } else {
+          log("获取活动二维码超时")
+          retry++
+          if (retry >= maxRetryTimes) {
+            log("多次找不到二维码，猜测此账号频率过快")
+            log("设置此账号休息一个半小时")
+
+            let now = new Date()
+            now.setHours(now.getHours() + 1.5)
+
+            DailyStorage.setReadNextTime(now.getTime())
+            break
+          }
         }
       } else {
         log("开始活动，未找到");
@@ -145,6 +160,8 @@ const MTZ = {
           }
 
           DailyStorage.setReadNextTime(futureTime);
+        } else {
+          log("没有找到剩余时间")
         }
         return false;
       }

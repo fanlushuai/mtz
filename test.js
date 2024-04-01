@@ -1,6 +1,6 @@
 // // const { WeiXin } = require("./weixin");
 
-const { AutojsUtil } = require("./autojsUtil");
+// const { AutojsUtil } = require("./autojsUtil");
 
 // // let accArr = WeiXin.getAllAccount();
 // // log(accArr);
@@ -68,15 +68,11 @@ const { AutojsUtil } = require("./autojsUtil");
 
 // AutojsUtil.reloadScriptEngine("./scriptTask.js")
 
-let excution=AutojsUtil.execScriptFile("./scriptTask.js")
-
-events.broadcast.on("hello", function (name) {
-    toastLog("你好,xxxxxxxxxxxxxxx " + name);
-    AutojsUtil.stopCurrentScriptEngine()
-    excution.forceStop();
-  });
-
-
 // todo 发送通知
 
+
+let now = new Date()
+now.setHours(now.getHours() + 1)
+
+console.log(now.getTime())
 
