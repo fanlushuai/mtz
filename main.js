@@ -53,6 +53,8 @@ ui.boot.click(function () {
   }
 
   AutojsUtil.buttonDisable(ui.boot, "已启动");
+  log("保存配置");
+  Config.setUI2LSConfig();
 
   if (!hasStart) {
     hasStart = true;
