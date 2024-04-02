@@ -47,19 +47,19 @@ const DailyStorage = {
     if (readNextTime) {
       // todo 格式化一下数据。判断一下时间
       if (new Date().getTime() > readNextTime) {
-        log("过了限制时间");
+        // log("过了限制时间");
         return true;
       } else {
-        log("还没有过限制时间");
+        // log("还没有过限制时间");
         return false;
       }
     }
 
-    log("没有发现限制时间");
+    // log("没有发现限制时间");
     return true;
   },
   canDoAccounts: function (accountArr) {
-    log("寻找可执行动作账号");
+    log("开始寻找可执行动作账号");
     let canA = [];
     while (1) {
       for (let accont of accountArr) {
@@ -73,7 +73,6 @@ const DailyStorage = {
           canA.push(accont);
         }
       }
-      log("找到有效动作账号： %s", canA);
 
       if (canA.length > 0) {
         break;
@@ -81,6 +80,8 @@ const DailyStorage = {
 
       sleep(2000);
     }
+
+    log("找到有效动作账号： %s", canA);
 
     return canA;
   },

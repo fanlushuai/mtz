@@ -106,7 +106,7 @@ const WeiXin = {
       10,
       this.name,
       () => {
-        AutojsUtil.refreshUI(appName);
+        AutojsUtil.refreshUI("微信");
         AutojsUtil.pageDownBySwipe();
       }
     );
@@ -119,18 +119,30 @@ const WeiXin = {
   },
   getAllAccount: function () {
     // 账号可能很多，还需要滚动屏幕
-    AutojsUtil.pageDownBySwipe();
-    sleep(1000);
-
-    AutojsUtil.refreshUI("微信");
-
-    let allAccountEles = id("dy").find();
+    log("开始获取所有账号")
     let acArr = [];
-    for (let aE of allAccountEles) {
-      acArr.push(aE.text());
+    while (1) {
+
+      AutojsUtil.pageDownBySwipe();
+      sleep(1000);
+
+      AutojsUtil.refreshUI("微信");
+
+      let allAccountEles = id("dy").find();
+
+      for (let aE of allAccountEles) {
+        acArr.push(aE.text());
+      }
+
+
+      if (acArr.length >= 1) {
+        // 至少有一个账号，才说明获取到了
+        break
+      }
     }
 
     log("所有账号：%s", acArr);
+
     return acArr;
   },
   changeAccTo: function (name) {
