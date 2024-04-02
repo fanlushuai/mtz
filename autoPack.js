@@ -22,10 +22,32 @@ const Autojsx = {
       sleep(1000);
     }
   },
-  pack: function (name) {
-    click(id("name").text(name).findOne());
+  pack: function (buildDir, projectName) {
+    click(id("name").text(buildDir).findOne());
 
     click(id("build").findOne());
+
+
+    function setVersion() {
+      function editTextEle(name) {
+        return text(name).findOne().parent().parent()
+      }
+
+      let now = new Date()
+      let verisonName = now.getMonth() + 1 + "-" + now.getDay() + "-" + now.getHours() + "-" + now.getMinutes() + "-" + now.getSeconds()
+      let versionNum = now.getMonth() + 1 + "" + now.getDay() + "" + now.getHours() + "" + now.getMinutes() + "" + now.getSeconds()
+      log("设置版本")
+      log(verisonName)
+      log(versionNum)
+      editTextEle("应用名称").setText(projectName)
+      editTextEle("版本名称").setText(verisonName)
+      editTextEle("版本号").setText(versionNum)
+
+
+      return projectName + "_v" + verisonName + ".apk"
+    }
+
+    let apkName = setVersion()
 
     log("关闭 显示启动界面");
     click(scrollUtillFind(text("显示启动界面")));
@@ -48,7 +70,9 @@ const Autojsx = {
     while (!text("打包成功").exists()) {
       sleep(500);
     }
-    log("打包成功");
+    log("打包成功 %s", apkName);
+
+    return apkName
   },
   back: function () {
     log("返回");
@@ -79,14 +103,36 @@ const Autojsx = {
     toast("老板，打包完成！！");
     sleep(1000);
   },
-  share: function () {
-    let x = id("sort").findOne().bounds().centerX();
-    let y = id("name").findOne().bounds().centerY();
-    press(x, y, 1);
-    sleep(1000);
-    sleep(1000);
-    click(text("发送").findOne());
-    sleep(1000);
+  share: function (apkName) {
+
+    click3Dot(apkName)
+
+    function click3Dot(apkName) {
+
+      function get3DotEle(apkName) {
+        let eles = id("item").find()
+        for (let e of eles) {
+          if (e.findOne(text(apkName))) {
+            let es = e.find(className("android.widget.LinearLayout"))
+            for (let a of es) {
+              if (a.bounds().left > device.width / 2) {
+                return a
+              }
+            }
+          }
+        }
+      }
+
+      // let dot3Ele = get3DotEle("3-")
+      let dot3Ele = get3DotEle(apkName)
+      let db = dot3Ele.bounds()
+      log("点击3dot")
+      press(db.centerX(), db.centerY(), 1)
+    }
+
+    sleep(1500)
+    log("点击 发送")
+    click(text("发送").findOne())
   },
   getClipX: function (callback) {
     // 清空剪切板存储
@@ -183,7 +229,7 @@ const Oppo = {
     }
 
     let e = desc("发送").findOne();
-    sleep(2000); //排除，悬浮气泡提示
+    sleep(3000); //排除，悬浮气泡提示
     click(e);
 
     // 不存在，就一直等着
@@ -245,22 +291,20 @@ function pageDownBySwipe() {
 
 let projectName = "inHereBuild";
 
-function build() {
+function build(projectName) {
   Autojsx.boot();
   Autojsx.backIfInbuildDir();
-  Autojsx.pack(projectName);
+
+  let apkName = Autojsx.pack("inHereBuild", projectName);
   Autojsx.back();
+  return apkName
 }
 
-function share() {
-  Autojsx.share();
+function share(apkName) {
+  Autojsx.share(apkName);
   Oppo.sendToWss();
   WeiXin.sendTo("文件传输助手");
 }
 
-build();
-share();
+share(build("美添赚助手"));
 
-// WeiXin.sendTo("文件传输助手");
-
-// Oppo.sendToWss();
