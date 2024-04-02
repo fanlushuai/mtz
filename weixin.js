@@ -147,6 +147,7 @@ const WeiXin = {
   },
   changeAccTo: function (name) {
     AutojsUtil.clickEle(text(name).findOne());
+    // 如果点击的就是当前账号
 
     sleep(1000);
 

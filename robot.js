@@ -91,8 +91,11 @@ const Robot = {
     log("切换账号到 %s", targetAccName);
 
     if (targetAccName == cuAcc) {
-      log("当前账号和目标账号一样，等待释放新的可用账号");
-      sleep(5 * 60 * 1000);
+      log("当前账号和目标账号一样");
+      // sleep(5 * 60 * 1000);
+      log("回退到首页")
+      WeiXin.back2Settings()
+      return
     }
 
     if (!WeiXin.changeAccTo(targetAccName)) {
@@ -143,7 +146,7 @@ const Robot = {
       log("开始任务");
       Robot.currentAccount = WeiXin.wo();
       DailyStorage.currentAccount = Robot.currentAccount;
-      
+
       log("当前微信账号 %s", DailyStorage.currentAccount);
 
       if (
