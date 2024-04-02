@@ -8,7 +8,12 @@ const WeiXin = {
   },
   wo: function () {
     AutojsUtil.clickSelectorWithAutoRefresh(text("我"), "我", 10, this.name);
-    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(id("ouv"), "微信号", 10, this.name)
+    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      id("ouv"),
+      "微信号",
+      10,
+      this.name
+    );
     return ele.getText().replace("微信号：", "");
   },
   intoStarDir: function () {
@@ -119,14 +124,15 @@ const WeiXin = {
   },
   getAllAccount: function () {
     // 账号可能很多，还需要滚动屏幕
-    log("开始获取所有账号")
+    log("开始获取所有账号");
+    sleep(1000);
     let acArr = [];
     while (1) {
-
       AutojsUtil.pageDownBySwipe();
-      sleep(1000);
+      sleep(1500);
 
       AutojsUtil.refreshUI("微信");
+      sleep(2000);
 
       let allAccountEles = id("dy").find();
 
@@ -134,10 +140,9 @@ const WeiXin = {
         acArr.push(aE.text());
       }
 
-
       if (acArr.length >= 1) {
         // 至少有一个账号，才说明获取到了
-        break
+        break;
       }
     }
 
@@ -147,7 +152,7 @@ const WeiXin = {
   },
   changeAccTo: function (name) {
     AutojsUtil.clickEle(text(name).findOne());
-    // 如果点击的就是当前账号
+    // 如果点击的就是当前账。。不会的，前面拦截了
 
     sleep(1000);
 
