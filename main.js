@@ -16,13 +16,12 @@ function revoverBootButton() {
     // 重置按钮为可用
     log("重置按钮为 启动");
     AutojsUtil.buttonEnable(ui.boot, "启 动");
-
   }
 }
 
 ui.emitter.on("resume", function () {
   revoverBootButton();
-  hasStart = false
+  hasStart = false;
 });
 
 events.on("exit", function () {
@@ -42,10 +41,10 @@ let hasStart = false;
 
 ui.boot.click(function () {
   // 用来提供测试版本
-  if (new Date().getTime() > 1712311050000) {
-    alert("脚本异常");
-    return;
-  }
+  // if (new Date().getTime() > 1712311050000) {
+  //   alert("脚本异常");
+  //   return;
+  // }
 
   if (auto.service == null) {
     toastLog("请先开启无障碍服务！");
