@@ -43,6 +43,10 @@ const Robot = {
       sleep(3 * 1000);
 
       MTZ.read();
+
+      MTZ.tryGetSetLeftReadTime();
+    } else {
+      log("跳过阅读");
     }
 
     // todo 阅读规则？？
@@ -93,9 +97,9 @@ const Robot = {
     if (targetAccName == cuAcc) {
       log("当前账号和目标账号一样");
       // sleep(5 * 60 * 1000);
-      log("回退到首页")
-      WeiXin.back2Settings()
-      return
+      log("回退到首页");
+      WeiXin.back2Settings();
+      return;
     }
 
     if (!WeiXin.changeAccTo(targetAccName)) {
@@ -123,6 +127,8 @@ const Robot = {
 
     if (!DailyStorage.yetTransferScoreToday()) {
       this.exchange();
+    } else {
+      log("内存里发现已经兑换，跳过");
     }
 
     // todo 参加活动，可以返回一下，还剩多少时间。方便任务高效调度。

@@ -93,6 +93,47 @@ const MTZ = {
     sleep(1.5 * 1000);
     this.tryNotification();
   },
+  tryGetSetLeftReadTime: function () {
+    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
+      text("文章阅读推荐"),
+      "文章阅读推荐",
+      5,
+      "微信",
+      function () {
+        WeiXin.refreshWeb();
+      }
+    );
+
+    if (ele) {
+      log("未找到文章阅读推荐元素");
+      return;
+    }
+
+    //剩余54分钟
+    // 剩余1小时15分钟
+    let leftTimeEle = ele.parent().findOne(textMatches(/(剩余.+分钟)/));
+    if (leftTimeEle) {
+      let textStr = leftTimeEle
+        .getText()
+        .replace("剩余", "")
+        .replace("分钟", "");
+
+      let futureTime;
+      if (textStr.indexOf("小时") > 0) {
+        let time2 = textStr.split("小时");
+        futureTime =
+          parseInt(time2[0]) * 1000 * 60 * 60 +
+          time2[1] * 1000 * 60 +
+          new Date().getTime();
+      } else {
+        futureTime = parseInt(textStr) * 1000 * 60 + new Date().getTime();
+      }
+
+      log("设置剩余时间到内存 %s", futureTime);
+
+      DailyStorage.setReadNextTime(futureTime);
+    }
+  },
 
   activeRead: function () {
     sleep(1000);
@@ -102,15 +143,27 @@ const MTZ = {
     let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
       text("文章阅读推荐"),
       "文章阅读推荐",
-      10,
+      5,
       "微信",
       function () {
         WeiXin.refreshWeb();
       }
     );
 
+    if (ele == null) {
+      // 有时候账号没有，文章阅读选项
+      log("没有发现文章阅读推荐");
+      log("设置此账号休息一个半小时，怎么会没有呢？？");
+
+      let now = new Date();
+      now.setHours(now.getHours() + 1.5);
+
+      DailyStorage.setReadNextTime(now.getTime());
+      return;
+    }
+
     let maxRetryTimes = 5;
-    let retry = 0
+    let retry = 0;
     while (1) {
       let eles = ele.parent().find(text("开始活动"));
       if (eles && eles.length > 0) {
@@ -124,17 +177,17 @@ const MTZ = {
           log("发现二维码弹窗");
           return true;
         } else {
-          log("获取活动二维码超时")
-          retry++
+          log("获取活动二维码超时");
+          retry++;
           if (retry >= maxRetryTimes) {
-            log("多次找不到二维码，猜测此账号频率过快")
-            log("设置此账号休息一个半小时")
+            log("多次找不到二维码，猜测此账号频率过快");
+            log("设置此账号休息一个半小时");
 
-            let now = new Date()
-            now.setHours(now.getHours() + 1.5)
+            let now = new Date();
+            now.setHours(now.getHours() + 1.5);
 
-            DailyStorage.setReadNextTime(now.getTime())
-            break
+            DailyStorage.setReadNextTime(now.getTime());
+            break;
           }
         }
       } else {
@@ -161,7 +214,7 @@ const MTZ = {
 
           DailyStorage.setReadNextTime(futureTime);
         } else {
-          log("没有找到剩余时间")
+          log("没有找到剩余时间");
         }
         return false;
       }
@@ -186,6 +239,9 @@ const MTZ = {
       let yetBackEle = text("长按或截图保存推广海报").findOne(4 * 1000);
       if (yetBackEle) {
         log("已经返回了");
+        //
+        WeiXin.refreshWeb();
+
         break;
       }
     }

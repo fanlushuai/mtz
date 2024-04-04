@@ -4,10 +4,10 @@ const DailyStorage = {
     // 每个账号，每天一个存储
     return storages.create(
       new Date().getMonth() +
-      "" +
-      new Date().getDate() +
-      "ds" +
-      DailyStorage.currentAccount
+        "" +
+        new Date().getDate() +
+        "ds" +
+        DailyStorage.currentAccount
     );
   },
   localStorage2: function () {
@@ -33,13 +33,22 @@ const DailyStorage = {
     this.localStorage().put("TransferScore", true);
   },
   yetTransferScoreToday: function () {
+    // 6点之前，全部返回，已经转移了。
+    let now = new Date();
+    let sixHours = 6 * 1000 * 60 * 60;
+    let nowHours =
+      now.getHours() * 1000 * 60 * 60 + now.getMinutes() * 1000 * 60;
+    if (nowHours < sixHours) {
+      log("6点之前不转移");
+      return true;
+    }
     return this.localStorage().get("TransferScore", false);
   },
 
   setReadNextTime: function (futureTime) {
     // 剩余54分钟
     // 剩余1小时15分钟
-    log("设置，下次阅读时间%s", futureTime)
+    log("设置，下次阅读时间%s", futureTime);
     this.localStorage2().put("readNextTime", futureTime);
   },
   canReadNow: function () {
