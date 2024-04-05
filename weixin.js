@@ -55,7 +55,7 @@ const WeiXin = {
     // press(device.width / 2, device.height / 2, 1000)
     sleep(1000); //等待那个滑动特效结束
     log("长按 %s,%s", x, y);
-    press(x, y, 1000); //600以上，为长按。
+    press(x, y, 1500); //600以上，为长按。
     sleep(1.5 * 1000); //等待那个滑动特效结束
   },
   jumpByqrCode: function (func) {
