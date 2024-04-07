@@ -89,7 +89,7 @@ const WeiXin = {
       this.name
     );
   },
-  changeAccount: function () {
+  cilckChangeAccount: function () {
     // AutojsUtil.pageDownBySwipe()
     sleep(1000);
     AutojsUtil.pageDownBySwipe();
@@ -179,9 +179,6 @@ const WeiXin = {
     sleep(2000);
     return true;
   },
-  changeNext: function () {
-    id("dy").find();
-  },
   backTab: function () {
     // AutojsUtil.clickEle(id("actionbar_up_indicator_btn"))
     log("左上返回");
@@ -226,26 +223,8 @@ const WeiXin = {
     AutojsUtil.refreshUI("微信");
     sleep(1 * 1000);
   },
-  //   refreshWeb: function () {
-  //     log("刷新网页");
-  //     AutojsUtil.clickSelectorWithAutoRefresh(id("coz"), "。。。", 10, this.name);
-  //     sleep(1.5 * 1000);
-  //     AutojsUtil.clickSelectorWithAutoRefresh(
-  //       id("obc").text("刷新"),
-  //       "刷新",
-  //       10,
-  //       this.name
-  //     );
-  //     sleep(4 * 1000);
-  //   },
 };
 
-// WeiXin.refreshWeb()
-
-//
-//
-
-// log(find())
 
 module.exports = {
   WeiXin,

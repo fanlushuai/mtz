@@ -417,6 +417,13 @@ const AutojsUtil = {
       sleep(100); //等待一会，才能设置尺寸成功
       console.setSize(cw, ch); //需要前面等待一会
       console.setPosition(dw - cw, 120);
+
+      let now = new Date()
+      let logFileName = autoLog + "-" + (now.getMonth() + 1) + "_" + now.getDay() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
+      console.setGlobalLogConfig({
+        "file": logFileName
+      });
+
     });
   },
   waitFor: function (selector, timeoutSec) {

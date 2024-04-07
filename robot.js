@@ -143,7 +143,7 @@ const Robot = {
   taskSwichAcc: function () {
     log("切换下一个账号");
     WeiXin.settings();
-    WeiXin.changeAccount();
+    WeiXin.cilckChangeAccount();
     this.changeNextAccount();
   },
   start: function () {
