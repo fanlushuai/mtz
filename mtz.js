@@ -288,12 +288,12 @@ const MTZ = {
     }
 
     log("输入账号，密码");
-    let x = className("EditText").visibleToUser(true).clickable(true).find();
-    // x[0].setText("1");
-    // x[1].setText("2");
-    // x[2].setText("1553733");
-    x[2].setText(userId);
-    x[3].setText(this.withdrawPW);
+
+    let withdrawEditEle = text("输入提现密码").findOne().parent().findOne(className("EditText"))
+    withdrawEditEle.setText(this.withdrawPW)
+
+    let userIdEditEle = text("输入用户ID").findOne().parent().findOne(className("EditText"))
+    userIdEditEle.setText(userId)
 
     log("确认");
     text("确认").clickable(true).findOne().click();
