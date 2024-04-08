@@ -76,7 +76,7 @@ const AutojsUtil = {
 
     window.exitOnClose(); //注册退出，退出脚本
 
-    setInterval(() => { }, 1000);
+    // setInterval(() => { }, 1000);
 
     let x, y, windowX, windowY, downTime;
     window.action.setOnTouchListener(function (view, event) {
@@ -124,6 +124,18 @@ const AutojsUtil = {
           }
         }
       });
+
+      // new java.lang.Thread(function () {
+      //   //耗时间的代码放这里
+      //   while (true) {
+      //     try {
+      //       taskFunc();
+      //       sleep(1);
+      //     } catch (error) {
+      //       log(error);
+      //     }
+      //   }
+      // }).start();
     }
 
     function onClick() {
@@ -196,7 +208,7 @@ const AutojsUtil = {
       console.warn("选择器查找失败，重启");
       // 杀掉app，重启app
       AutojsUtil.reloadApp("微信");
-      sleep(3000);
+      sleep(5000);
       // 重新开始执行
       AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 })
 
@@ -403,28 +415,26 @@ const AutojsUtil = {
     swipe(x, h1, x, h2, 500); //向下翻页(从纵坐标6分之5处拖到纵坐标6分之1处)
   },
   configConsole: (title) => {
-    threads.start(() => {
-      let dw = device.width;
-      let dh = device.height;
-      let cw = (dw * 4) / 10;
-      let ch = (dh * 2) / 8;
+    log("开启控制台")
+    let dw = device.width;
+    let dh = device.height;
+    let cw = (dw * 4) / 10;
+    let ch = (dh * 2) / 8;
 
-      console.setTitle(title || "");
-      console.show(true);
-      console.setCanInput(false);
+    console.setTitle(title || "");
+    console.show(true);
+    console.setCanInput(false);
 
-      console.setMaxLines(500);
-      sleep(100); //等待一会，才能设置尺寸成功
-      console.setSize(cw, ch); //需要前面等待一会
-      console.setPosition(dw - cw, 120);
+    console.setMaxLines(500);
+    sleep(100); //等待一会，才能设置尺寸成功
+    console.setSize(cw, ch); //需要前面等待一会
+    console.setPosition(dw - cw, 120);
 
-      let now = new Date()
-      let logPath = "/storage/emulated/0/autojs/"
-      let logFileName = logPath + "autoLog-" + (now.getMonth() + 1) + "_" + now.getDay() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
-      console.setGlobalLogConfig({
-        "file": logFileName
-      });
-
+    let now = new Date()
+    let logPath = "/storage/emulated/0/autojs/"
+    let logFileName = logPath + "autoLog-" + (now.getMonth() + 1) + "_" + now.getDay() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
+    console.setGlobalLogConfig({
+      "file": logFileName
     });
   },
   waitFor: function (selector, timeoutSec) {
@@ -569,7 +579,9 @@ const AutojsUtil = {
     }
   },
   stopCurrentScriptEngine: function () {
+    log("开始停止当前脚本引擎")
     engines.all().map((ScriptEngine) => {
+      log("存在的脚本引擎 %s", engines.myEngine().toString())
       if (engines.myEngine().toString() == ScriptEngine.toString()) {
         log("停止当前脚本引擎 %s", engines.myEngine().toString())
         ScriptEngine.forceStop();
