@@ -432,7 +432,7 @@ const AutojsUtil = {
 
     let now = new Date()
     let logPath = "/storage/emulated/0/autojs/"
-    let logFileName = logPath + "autoLog-" + (now.getMonth() + 1) + "_" + now.getDay() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
+    let logFileName = logPath + "autoLog-" + (now.getMonth() + 1) + "_" + now.getDate() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
     console.setGlobalLogConfig({
       "file": logFileName
     });

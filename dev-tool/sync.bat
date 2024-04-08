@@ -22,9 +22,9 @@ if %errorlevel% neq 0 (
     exit
 )
 
-@REM echo "%PC_FOLDER_PATH%"
-@REM echo "%PHONE_FOLDER_PATH%"
-@REM echo "%PHONE_BUILD_FOLDER_PATH%"
+echo "%PC_FOLDER_PATH%"
+echo "%PHONE_FOLDER_PATH%"
+echo "%PHONE_BUILD_FOLDER_PATH%"
 
 adb shell mkdir -p "%PHONE_FOLDER_PATH%"
 adb push "%PC_FOLDER_PATH%" "%PHONE_FOLDER_PATH%"

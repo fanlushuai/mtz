@@ -37,7 +37,7 @@ const Autojsx = {
         now.getMonth() +
         1 +
         "-" +
-        now.getDay() +
+        now.getDate() +
         "-" +
         now.getHours() +
         "-" +
@@ -45,7 +45,7 @@ const Autojsx = {
         "-" +
         now.getSeconds();
       let versionNum =
-        now.getMonth() +
+        now.() +
         1 +
         "" +
         now.getDay() +
@@ -186,6 +186,7 @@ const Autojsx = {
       while (1) {
         let c = clipStorage.get("1", "111111");
         if (c != "111111") {
+          log("阻塞获取剪切板内容为：%s", c)
           return c;
         }
         sleep(200);
