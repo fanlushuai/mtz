@@ -289,11 +289,17 @@ const MTZ = {
 
     log("输入账号，密码");
 
-    let withdrawEditEle = text("输入提现密码").findOne().parent().findOne(className("EditText"))
-    withdrawEditEle.setText(this.withdrawPW)
+    let withdrawEditEle = text("输入提现密码")
+      .findOne()
+      .parent()
+      .findOne(className("EditText"));
+    withdrawEditEle.setText(this.withdrawPW);
 
-    let userIdEditEle = text("输入用户ID").findOne().parent().findOne(className("EditText"))
-    userIdEditEle.setText(userId)
+    let userIdEditEle = text("输入用户ID")
+      .findOne()
+      .parent()
+      .findOne(className("EditText"));
+    userIdEditEle.setText(userId);
 
     log("确认");
     text("确认").clickable(true).findOne().click();
@@ -375,6 +381,19 @@ const MTZ = {
   },
   tryNotification: function () {
     let e = text("我知道了").visibleToUser(true).clickable(true).findOne(3000);
+
+    let questionFeedbackEle = text("问题反馈")
+      .visibleToUser(true)
+      .clickable(true)
+      .findOne(3000);
+
+    if (questionFeedbackEle && e) {
+      if (questionFeedbackEle.bounds().top > e.bounds().top) {
+        log("此，我知道了，位置不对");
+        return;
+      }
+    }
+
     if (e) {
       log("阅读公告");
       sleep(4000);

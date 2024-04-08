@@ -210,7 +210,7 @@ const AutojsUtil = {
       AutojsUtil.reloadApp("微信");
       sleep(5000);
       // 重新开始执行
-      AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 })
+      AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 });
 
       AutojsUtil.stopCurrentScriptEngine();
       return;
@@ -415,7 +415,7 @@ const AutojsUtil = {
     swipe(x, h1, x, h2, 500); //向下翻页(从纵坐标6分之5处拖到纵坐标6分之1处)
   },
   configConsole: (title) => {
-    log("开启控制台")
+    log("开启控制台");
     let dw = device.width;
     let dh = device.height;
     let cw = (dw * 4) / 10;
@@ -430,11 +430,23 @@ const AutojsUtil = {
     console.setSize(cw, ch); //需要前面等待一会
     console.setPosition(dw - cw, 120);
 
-    let now = new Date()
-    let logPath = "/storage/emulated/0/autojs/"
-    let logFileName = logPath + "autoLog-" + (now.getMonth() + 1) + "_" + now.getDate() + "_" + now.getHours() + "_" + now.getMinutes() + "-" + random(1, 100) + ".txt"
+    let now = new Date();
+    let logPath = "/storage/emulated/0/autojs/";
+    let logFileName =
+      logPath +
+      "autoLog-" +
+      (now.getMonth() + 1) +
+      "_" +
+      now.getDate() +
+      "_" +
+      now.getHours() +
+      "_" +
+      now.getMinutes() +
+      "-" +
+      random(1, 100) +
+      ".txt";
     console.setGlobalLogConfig({
-      "file": logFileName
+      file: logFileName,
     });
   },
   waitFor: function (selector, timeoutSec) {
@@ -464,7 +476,7 @@ const AutojsUtil = {
     );
     w.setTouchable(false);
     w.setSize(-1, -1);
-    setInterval(() => { }, 1000);
+    setInterval(() => {}, 1000);
 
     let paint = new Paint();
     //设置画笔为填充，则绘制出来的图形都是实心的
@@ -579,19 +591,19 @@ const AutojsUtil = {
     }
   },
   stopCurrentScriptEngine: function () {
-    log("开始停止当前脚本引擎")
+    log("开始停止当前脚本引擎");
     engines.all().map((ScriptEngine) => {
-      log("存在的脚本引擎 %s", engines.myEngine().toString())
+      log("存在的脚本引擎 %s", engines.myEngine().toString());
       if (engines.myEngine().toString() == ScriptEngine.toString()) {
-        log("停止当前脚本引擎 %s", engines.myEngine().toString())
-        ScriptEngine.forceStop();
+        log("停止当前脚本引擎 %s", engines.myEngine().toString());
+        engines.myEngine().forceStop();
       }
     });
   },
   execScriptFile: function (scriptFullPath, config) {
     exectuion = engines.execScriptFile(scriptFullPath, config); //简单的例子
     sleep(2000);
-    return exectuion
+    return exectuion;
   },
 };
 
