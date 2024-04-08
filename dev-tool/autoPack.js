@@ -45,7 +45,7 @@ const Autojsx = {
         "-" +
         now.getSeconds();
       let versionNum =
-        now.() +
+        now.getMonth() +
         1 +
         "" +
         now.getDay() +
