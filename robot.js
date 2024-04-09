@@ -98,7 +98,25 @@ const Robot = {
       log("当前账号和目标账号一样");
       // sleep(5 * 60 * 1000);
       log("回退到首页");
-      WeiXin.back2Settings();
+      // WeiXin.back2Settings();
+
+      AutojsUtil.testAndBack(
+        function () {
+          // return id("title").text("设置").findOnce() != null
+
+          // return text("发现").findOnce() != null
+          // return id("ouv").findOnce() != null
+          return (
+            text("收藏")
+              .id("android:id/title")
+              .visibleToUser(true)
+              .findOnce() != null
+          );
+        },
+        10,
+        WeiXin.backTab
+      );
+
       return;
     }
 
