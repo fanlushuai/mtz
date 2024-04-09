@@ -90,7 +90,7 @@ const MTZ = {
     // );
 
     // 莫名其妙，有时候会弹出来
-    sleep(1.5 * 1000);
+    // sleep(1.5 * 1000);
     this.tryNotification();
   },
   tryGetSetLeftReadTime: function () {
@@ -312,14 +312,14 @@ const MTZ = {
   },
   transferScore: function (userId) {
     log("--> 转移积分");
-
+    sleep(2000);
     AutojsUtil.clickSelectorWithAutoRefresh(
       text("积分转移"),
       "积分转移",
       10,
       "微信"
     );
-    sleep(1000);
+    sleep(2000);
     log("再次点击 积分转移");
     let e = text("积分转移").clickable(true).findOne();
     AutojsUtil.clickEle(e);
@@ -380,33 +380,42 @@ const MTZ = {
     return userId;
   },
   tryNotification: function () {
-    let e = text("我知道了").visibleToUser(true).clickable(true).findOne(3000);
+    log("等待页面完整加载");
+    AutojsUtil.waitFor(text("问题反馈"), 8);
+    sleep(3000);
 
-    let questionFeedbackEle = text("问题反馈")
-      .visibleToUser(true)
-      .clickable(true)
-      .findOne(3000);
+    AutojsUtil.pageDownBySwipe();
 
-    if (questionFeedbackEle && e) {
-      if (questionFeedbackEle.bounds().top > e.bounds().top) {
-        log("此，我知道了，位置不对");
-        return;
-      }
+    let eles = text("我知道了").visibleToUser(true).clickable(true).find();
+
+    if (eles == null || eles.empty()) {
+      log("没有找到公告");
+      return;
     }
 
-    if (e) {
+    // let questionFeedbackEle = text("问题反馈")
+    //   .visibleToUser(true)
+    //   .clickable(true)
+    //   .findOne(3000);
+
+    // let eleArr = [];
+
+    // for (let ele of eles) {
+    //   if (questionFeedbackEle && ele) {
+    //     if (questionFeedbackEle.bounds().top > ele.bounds().top) {
+    //       log("此，我知道了，位置不对");
+    //       return;
+    //     } else {
+    //       eleArr.push(ele);
+    //     }
+    //   }
+    // }
+
+    for (let e of eles) {
       log("阅读公告");
       sleep(4000);
       log("点 我知道了");
       AutojsUtil.clickEle(e);
-
-      // e = text("我知道了").visibleToUser(true).clickable(true).findOne(1000);
-      // if (e) {
-      //   log("再次点击");
-      //   AutojsUtil.press(e);
-      // }
-    } else {
-      log("没发现公告");
     }
   },
 };
