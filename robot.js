@@ -106,12 +106,8 @@ const Robot = {
 
           // return text("发现").findOnce() != null
           // return id("ouv").findOnce() != null
-          return (
-            text("收藏")
-              .id("android:id/title")
-              .visibleToUser(true)
-              .findOnce() != null
-          );
+          sleep(800);
+          return !desc("返回").exists();
         },
         10,
         WeiXin.backTab
