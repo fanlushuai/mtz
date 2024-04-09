@@ -400,11 +400,11 @@ const MTZ = {
       log("点 我知道了");
       AutojsUtil.clickEle(e);
 
-      e = text("我知道了").visibleToUser(true).clickable(true).findOne(1000);
-      if (e) {
-        log("再次点击");
-        AutojsUtil.press(e);
-      }
+      // e = text("我知道了").visibleToUser(true).clickable(true).findOne(1000);
+      // if (e) {
+      //   log("再次点击");
+      //   AutojsUtil.press(e);
+      // }
     } else {
       log("没发现公告");
     }
