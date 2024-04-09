@@ -1,3 +1,5 @@
+const { pushplus } = require("./msgPush");
+
 const AutojsUtil = {
   randomSleep: function (maxSecend, minSecend) {
     // return;
@@ -207,6 +209,7 @@ const AutojsUtil = {
       // alert("选择器查找失败");
       console.warn("选择器查找失败，重启");
       // 杀掉app，重启app
+      pushplus.push("重启脚本", "非预期元素");
       AutojsUtil.reloadApp("微信");
       sleep(5000);
       // 重新开始执行
