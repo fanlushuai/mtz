@@ -3,6 +3,7 @@ const pushplus = {
     // https://pushplus.apifox.cn/api-107787114
     // https://www.pushplus.plus/send
 
+    log("推送内容 %s %s", title, content)
     let s = storages.create("msgpush-autojsx123455");
     let token = s.get("pushToken");
     if (token) {

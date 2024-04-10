@@ -4,6 +4,13 @@ const Autojsx = {
     sleep(1000);
     app.launchApp("Autox.js v6");
     sleep(1000);
+    // 侧边栏是否打开
+    if (text("打开USB调试").exists()) {
+      log("点击空白处")
+      press(device.width - 10, device.height / 2, 1)
+      sleep(500)
+    }
+
     pageUpBySwipe();
   },
   backIfInbuildDir: function () {

@@ -1,3 +1,4 @@
+const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush");
 
 const AutojsUtil = {
@@ -210,8 +211,18 @@ const AutojsUtil = {
       console.warn("选择器查找失败，重启");
       // 杀掉app，重启app
       pushplus.push("重启脚本", "非预期元素");
+      // 判断是否包含验证文字。
+      if (textMatches(/(.*验证.*)/).findOne(2000)) {
+        log("发现，验证界面")
+        pushplus.push("已暂停脚本", "等待验证账号 " + DailyStorage.currentAccount);
+        log("脚本退出")
+        exit()
+      }
+
+      log("等待3分钟，再重启。等待工作人员前来查看日志")
+      sleep(3 * 60 * 1000)
+
       AutojsUtil.reloadApp("微信");
-      sleep(5000);
       // 重新开始执行
       AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 });
 
@@ -479,7 +490,7 @@ const AutojsUtil = {
     );
     w.setTouchable(false);
     w.setSize(-1, -1);
-    setInterval(() => {}, 1000);
+    setInterval(() => { }, 1000);
 
     let paint = new Paint();
     //设置画笔为填充，则绘制出来的图形都是实心的
@@ -527,8 +538,14 @@ const AutojsUtil = {
   },
   reloadApp: function (appName) {
     console.log("强制重启 %s", appName);
-    this.killApp(appName);
+    while (1) {
+      if (this.killApp(appName)) {
+        break
+      }
+    };
+
     app.launchApp(appName);
+    sleep(3000)
   },
   killApp: function (name) {
     let packageName = getPackageName(name) || getAppName(name);
@@ -546,6 +563,7 @@ const AutojsUtil = {
       log("打开 %s 设置", textName);
 
       app.openAppSetting(packageName);
+      log("等待打开设置")
       startTime = new Date().getTime();
       while (new Date().getTime() - startTime < 6000) {
         sleep(500);
@@ -574,6 +592,7 @@ const AutojsUtil = {
 
     sleep(random(800, 1000));
     back();
+    return true
 
     // 盲点
     function stop() {
