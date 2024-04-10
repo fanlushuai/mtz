@@ -212,7 +212,7 @@ const AutojsUtil = {
       // 杀掉app，重启app
       pushplus.push("重启脚本", "非预期元素");
       // 判断是否包含验证文字。
-      if (textMatches(/(.*验证.*)/).findOne(2000)) {
+      if (textMatches(/(.*验证.*微信.*)/).findOne(2000)) {
         log("发现，验证界面")
         pushplus.push("已暂停脚本", "等待验证账号 " + DailyStorage.currentAccount);
         log("脚本退出")
