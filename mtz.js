@@ -1,5 +1,6 @@
 const { AutojsUtil } = require("./autojsUtil");
 const { DailyStorage } = require("./dailyStorage");
+const { readStatics } = require("./statics");
 const { WeiXin } = require("./weixin");
 
 const MTZ = {
@@ -228,13 +229,23 @@ const MTZ = {
     AutojsUtil.waitFor(idMatches("activity-name"), 8);
     log("进入第一篇文章");
 
+
+    let docCount = 0
+
     while (1) {
+
+      log("等待进入 %s 文章内容，最长等15s", docCount)
+      AutojsUtil.waitFor(idMatches("activity-name"), 15);
+      docCount++
+      log("已进入 %s", docCount)
+
       let randomNum = random(10, 15);
-      log("阅读 %s 秒", randomNum);
+      log("随机阅读 %s 秒", randomNum);
       sleep(randomNum * 1000);
 
-      log("后退被动刷新");
+      log("后退");
       back();
+      log("等待被动刷新")
 
       let yetBackEle = text("长按或截图保存推广海报").findOne(4 * 1000);
       if (yetBackEle) {
@@ -245,6 +256,9 @@ const MTZ = {
         break;
       }
     }
+
+    log("本轮一共阅读了 %s 篇", docCount)
+    readStatics.add(DailyStorage.currentAccount, docCount)
   },
   getQrPosition: function () {
     log("获取二维码粗略坐标");

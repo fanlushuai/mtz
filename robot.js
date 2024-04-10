@@ -1,6 +1,8 @@
 const { Config } = require("./config.js");
 const { DailyStorage } = require("./dailyStorage");
+const { pushplus } = require("./msgPush.js");
 const { MTZ } = require("./mtz.js");
+const { readStatics } = require("./statics.js");
 const { WeiXin } = require("./weixin");
 
 const Robot = {
@@ -168,6 +170,15 @@ const Robot = {
       DailyStorage.currentAccount = Robot.currentAccount;
 
       log("当前微信账号 %s", DailyStorage.currentAccount);
+
+      if (!DailyStorage.yetReportYesterday()) {
+        log("开始 报告数据")
+        let staticsLog = readStatics.getYesterdayReport()
+        if (staticsLog) {
+          pushplus.push("昨日数据统计", staticsLog)
+        }
+        DailyStorage.setReportYesterday()
+      }
 
       if (
         DailyStorage.yetSignToday() &&

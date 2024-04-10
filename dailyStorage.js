@@ -1,13 +1,24 @@
 const DailyStorage = {
   currentAccount: "",
+  yesterdayStorage: function () {
+    var today = new Date();
+    var yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000));
+    return storages.create(
+      yesterday.getMonth() +
+      "" +
+      yesterday.getDate() +
+      "ds" +
+      DailyStorage.currentAccount
+    );
+  },
   localStorage: function () {
     // 每个账号，每天一个存储
     return storages.create(
       new Date().getMonth() +
-        "" +
-        new Date().getDate() +
-        "ds" +
-        DailyStorage.currentAccount
+      "" +
+      new Date().getDate() +
+      "ds" +
+      DailyStorage.currentAccount
     );
   },
   localStorage2: function () {
@@ -20,6 +31,13 @@ const DailyStorage = {
   },
   yetSignToday: function () {
     return this.localStorage().get("sign", false);
+  },
+  setReportYesterday: function () {
+    log("设置 已经报告 标记");
+    this.localStorage().put("hasReport", true);
+  },
+  yetReportYesterday: function () {
+    return this.localStorage().get("hasReport", false);
   },
   // setWithdrawToday: function () {
   //   log("设置 已经提现 标记");
