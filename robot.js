@@ -174,8 +174,10 @@ const Robot = {
       if (!DailyStorage.yetReportYesterday()) {
         log("开始 报告数据")
         let staticsLog = readStatics.getYesterdayReport()
-        if (staticsLog) {
+        if (staticsLog && staticsLog != "") {
           pushplus.push("昨日数据统计", staticsLog)
+          // 清空之后，就不会重复发送了。
+          readStatics.clearYesterdayStatics()
         }
         DailyStorage.setReportYesterday()
       }

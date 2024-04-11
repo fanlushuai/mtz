@@ -42,12 +42,16 @@ const readStatics = {
         if (readStatics == "") {
             return
         }
-        log("阅读统计 %j", readStatics)
+        log("昨天的阅读统计 %j", readStatics)
         var today = new Date();
         var yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000));
 
         let dateStr = yesterday.getMonth() + 1 + "月" + yesterday.getDate() + "号"
         return dateStr + JSON.stringify(readStatics)
+    },
+    clearYesterdayStatics: function () {
+        log("清空昨天的统计数据")
+        yesterdayStorage.put(this.cachekey, "")
     }
 }
 
