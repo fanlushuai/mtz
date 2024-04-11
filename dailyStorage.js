@@ -1,6 +1,6 @@
 const DailyStorage = {
   currentAccount: "",
-  yesterdayStorage: function () {
+  yesterdayGlobalStorage: function () {
     var today = new Date();
     var yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000));
     return storages.create(
@@ -8,7 +8,16 @@ const DailyStorage = {
       "" +
       yesterday.getDate() +
       "ds" +
-      DailyStorage.currentAccount
+      "global"
+    );
+  },
+  localGlobalStorage: function () {
+    return storages.create(
+      new Date().getMonth() +
+      "" +
+      new Date().getDate() +
+      "ds" +
+      "global"
     );
   },
   localStorage: function () {
@@ -34,10 +43,10 @@ const DailyStorage = {
   },
   setReportYesterday: function () {
     log("设置 已经报告 标记");
-    this.localStorage().put("hasReport", true);
+    this.localGlobalStorage().put("hasReport", true);
   },
   yetReportYesterday: function () {
-    return this.localStorage().get("hasReport", false);
+    return this.localGlobalStorage().get("hasReport", false);
   },
   // setWithdrawToday: function () {
   //   log("设置 已经提现 标记");

@@ -1,19 +1,19 @@
-const { DailyStorage } = require("./dailyStorage");
+const { DailyStorage } = require("./dailyStorage")
 
-let dailyStorage = DailyStorage.localStorage()
+let localGlobalStorage = DailyStorage.localGlobalStorage()
 
-let yesterdayStorage = DailyStorage.yesterdayStorage()
+let yesterdayGlobalStorage = DailyStorage.yesterdayGlobalStorage()
 
 const readStatics = {
     cachekey: "readStatics",
     add: function (account, thisTimesCount) {
-        let readStatics = dailyStorage.get(this.cachekey)
+        let readStatics = localGlobalStorage.get(this.cachekey)
         if (readStatics) {
             for (let a of readStatics) {
                 log(a)
                 if (a.account == account) {
                     a.times.push(thisTimesCount)
-                    dailyStorage.put(this.cachekey, readStatics)
+                    localGlobalStorage.put(this.cachekey, readStatics)
 
                     log("统计完毕")
                     return
@@ -23,22 +23,22 @@ const readStatics = {
             log("初次统计 %s", account)
 
             readStatics.push({ account: account, times: [thisTimesCount] })
-            dailyStorage.put(this.cachekey, readStatics)
+            localGlobalStorage.put(this.cachekey, readStatics)
         } else {
             // 初始化的数据结构
             readStatics = [{ account: account, times: [thisTimesCount] }]
-            dailyStorage.put(this.cachekey, readStatics)
+            localGlobalStorage.put(this.cachekey, readStatics)
         }
 
     },
     getReport: function () {
-        let readStatics = dailyStorage.get(this.cachekey, "")
+        let readStatics = localGlobalStorage.get(this.cachekey, "")
         log("阅读统计 %j", readStatics)
         let dateStr = new Date().getMonth() + 1 + "月" + new Date().getDate() + "号"
         return dateStr + JSON.stringify(readStatics)
     },
     getYesterdayReport: function () {
-        let readStatics = yesterdayStorage.get(this.cachekey, "")
+        let readStatics = yesterdayGlobalStorage.get(this.cachekey, "")
         if (readStatics == "") {
             return
         }
@@ -51,7 +51,7 @@ const readStatics = {
     },
     clearYesterdayStatics: function () {
         log("清空昨天的统计数据")
-        yesterdayStorage.put(this.cachekey, "")
+        yesterdayGlobalStorage.put(this.cachekey, "")
     }
 }
 
