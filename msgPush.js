@@ -25,7 +25,7 @@ const pushplus = {
     }
   },
   // 截图转化为base64太大了。先放弃了
-  pushFailCapture: function (title, content, imageBase64) {
+  pushFailCapture: function (title, content, picUrl) {
     // https://pushplus.apifox.cn/api-107787114
     // https://www.pushplus.plus/send
     log("推送失败内容 %s %s", title, content)
@@ -33,12 +33,12 @@ const pushplus = {
     let token = s.get("pushToken");
     if (token) {
 
-      function getHtmlContent(content, imageBase64) {
+      function getHtmlContent(content, picUrl) {
         let template = '<!DOCTYPE html> <html> <head> <meta charset="utf-8"> </head> <body> <p><h2>#content#</h2></p> <img src="#image#"  style="max-width: 100%"> </body> </html>'
-        return template.replace("#content#", content).replace("#image#", imageBase64)
+        return template.replace("#content#", content).replace("#image#", picUrl)
       }
 
-      contentHtml = getHtmlContent(content, imageBase64)
+      contentHtml = getHtmlContent(content, picUrl)
 
       log(contentHtml)
 

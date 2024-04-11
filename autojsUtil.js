@@ -1,5 +1,6 @@
 const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush");
+const { uploadPic } = require("./smms");
 
 const AutojsUtil = {
   randomSleep: function (maxSecend, minSecend) {
@@ -215,23 +216,25 @@ const AutojsUtil = {
 
       // 截图，保存，并发送。todo 
       log("进行截图")
-      let imageName = "autojs-" + new Date().getDate() + "-" + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + ".png"
-      var path = "/sdcard/" + imageName;
-      captureScreen(path);
+      let capturePicPath = AutojsUtil.captureScreen()
+
+      let picUrl = uploadPic(capturePicPath)
 
       if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
         log("发现需要人工接入界面")
-        pushplus.push("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount);
+        // pushplus.push("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount);
+        pushplus.pushFailCapture("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount, picUrl);
         log("脚本退出")
         exit()
       } else {
-        pushplus.push("重启脚本", "非预期元素");
+        pushplus.pushFailCapture("重启脚本", "非预期元素 " + DailyStorage.currentAccount, picUrl);
       }
 
-      log("等待3分钟，再重启。等待工作人员前来查看日志")
-      sleep(3 * 60 * 1000)
+      log("等待1分钟，再重启。等待工作人员前来查看日志")
+      sleep(1.5 * 60 * 1000)
 
       AutojsUtil.reloadApp("微信");
+      sleep(2000)
       // 重新开始执行
       AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 });
 
@@ -666,7 +669,18 @@ const AutojsUtil = {
     log("截图")
     let img = captureScreen()
     return images.toBase64(img, "png", 1)
+  },
+  captureScreen() {
+    AutojsUtil.autoPermisionScreenCapture()
+    sleep(1000)
+    let imageName = "autojs-" + new Date().getDate() + "-" + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + ".png"
+    var path = "/sdcard/autojs/" + imageName; //确保路径存在
+    log("截图并保存")
+    log(path)
+    captureScreen(path);
+    return path
   }
+
 };
 
 function once(fn, context) {
