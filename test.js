@@ -1,16 +1,11 @@
 const { AutojsUtil } = require("./autojsUtil");
+const { pushplus } = require("./msgPush");
 const { MTZ } = require("./mtz");
 const { WeiXin } = require("./weixin");
 
-AutojsUtil.testAndBack(
-  function () {
-    // return id("title").text("设置").findOnce() != null
 
-    // return text("发现").findOnce() != null
-    // return id("ouv").findOnce() != null
-    sleep(800);
-    return !desc("返回").exists();
-  },
-  10,
-  WeiXin.backTab
-);
+
+// AutojsUtil.autoPermisionScreenCapture()
+// let base64Image = AutojsUtil.getCurrrentScreenBase64()
+// // log(base64Image)
+// pushplus.pushFailCapture("失败测试达到", "不不不不不不", base64Image)

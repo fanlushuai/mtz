@@ -208,15 +208,24 @@ const AutojsUtil = {
 
     if (!ele) {
       // alert("选择器查找失败");
-      console.warn("选择器查找失败，重启");
+      console.warn("选择器查找彻底失败");
+      console.log("尝试判断，是否为需要人工接入的页面")
       // 杀掉app，重启app
-      pushplus.push("重启脚本", "非预期元素");
       // 判断是否包含验证文字。
-      if (textMatches(/(.*验证.*微信.*)/).findOne(2000)) {
-        log("发现，验证界面")
-        pushplus.push("已暂停脚本", "等待验证账号 " + DailyStorage.currentAccount);
+
+      // 截图，保存，并发送。todo 
+      log("进行截图")
+      let imageName = "autojs-" + new Date().getDate() + "-" + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + ".png"
+      var path = "/sdcard/" + imageName;
+      captureScreen(path);
+
+      if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
+        log("发现需要人工接入界面")
+        pushplus.push("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount);
         log("脚本退出")
         exit()
+      } else {
+        pushplus.push("重启脚本", "非预期元素");
       }
 
       log("等待3分钟，再重启。等待工作人员前来查看日志")
@@ -627,7 +636,54 @@ const AutojsUtil = {
     sleep(2000);
     return exectuion;
   },
+  autoPermisionScreenCapture: once(function () {
+    console.log("自动申请截图权限");
+    let Thread = threads.start(function () {
+      if (auto.service != null) {
+        //如果已经获得无障碍权限
+        //由于系统间同意授权的文本不同，采用正则表达式
+        let Allow = textMatches(/(允许|立即开始|统一)/).findOne(10 * 1000);
+        if (Allow) {
+          Allow.click();
+        }
+      } else {
+        log("未发现权限服务调用");
+      }
+    });
+    log("申请权限");
+
+    //在一个会话中，调用两次申请截图权限。就会卡死。
+    if (!requestScreenCapture(false)) {
+      log("请求截图权限失败");
+      return false;
+    } else {
+      Thread.interrupt();
+      log("已获得截图权限");
+      return true;
+    }
+  }),
+  getCurrrentScreenBase64() {
+    log("截图")
+    let img = captureScreen()
+    return images.toBase64(img, "png", 1)
+  }
 };
+
+function once(fn, context) {
+  var result;
+  // 注意，此处为了防止，并发，加了sync。
+  return sync(function () {
+    if (fn) {
+      log("执行一次");
+      result = fn.apply(context || this, arguments);
+      fn = null;
+    } else {
+      // log("已经执行")
+    }
+    return result;
+  });
+}
+
 
 module.exports = {
   AutojsUtil,
