@@ -1,6 +1,6 @@
 const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush");
-const { uploadPic } = require("./smms");
+const { uploadPic, Smms } = require("./smms");
 
 const AutojsUtil = {
   randomSleep: function (maxSecend, minSecend) {
@@ -216,9 +216,7 @@ const AutojsUtil = {
 
       // 截图，保存，并发送。todo 
       log("进行截图")
-      let capturePicPath = AutojsUtil.captureScreen()
-
-      let picUrl = uploadPic(capturePicPath)
+      let picUrl = Smms.captureAndUpload()
 
       if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
         log("发现需要人工接入界面")
@@ -670,7 +668,7 @@ const AutojsUtil = {
     let img = captureScreen()
     return images.toBase64(img, "png", 1)
   },
-  captureScreen() {
+  captureAndSaveScreen() {
     AutojsUtil.autoPermisionScreenCapture()
     sleep(1000)
     let imageName = "autojs-" + new Date().getDate() + "-" + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + ".png"
