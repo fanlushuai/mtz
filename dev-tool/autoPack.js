@@ -51,17 +51,7 @@ const Autojsx = {
         now.getMinutes() +
         "-" +
         now.getSeconds();
-      let versionNum =
-        now.getMonth() +
-        1 +
-        "" +
-        now.getDay() +
-        "" +
-        now.getHours() +
-        "" +
-        now.getMinutes() +
-        "" +
-        now.getSeconds();
+      let versionNum = new Date().getTime() + "";
       log("设置版本");
       log(verisonName);
       log(versionNum);

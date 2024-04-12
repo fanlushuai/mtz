@@ -208,14 +208,18 @@ const WeiXin = {
   },
   refreshWeb: function () {
     log("刷新网页");
-    AutojsUtil.clickSelectorWithAutoRefresh(id("coz"), "。。。", 10, this.name);
-    sleep(1.5 * 1000);
-    AutojsUtil.clickSelectorWithAutoRefresh(
-      id("obc").text("刷新"),
-      "刷新",
-      10,
-      this.name
-    );
+    while (AutojsUtil.clickSelectorWithAutoRefresh(id("coz"), "。。。", 10, this.name)) {
+
+      sleep(1.5 * 1000);
+      AutojsUtil.clickSelectorWithAutoRefresh(
+        id("obc").text("刷新"),
+        "刷新",
+        10,
+        this.name
+      );
+
+    }
+
     sleep(4 * 1000);
 
     AutojsUtil.refreshUI("微信");
