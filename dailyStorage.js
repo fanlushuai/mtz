@@ -66,7 +66,7 @@ const DailyStorage = {
     let nowHours =
       now.getHours() * 1000 * 60 * 60 + now.getMinutes() * 1000 * 60;
     if (nowHours < sixHours) {
-      log("6点之前不转移");
+      // log("6点之前不转移");
       return true;
     }
     return this.localStorage().get("TransferScore", false);

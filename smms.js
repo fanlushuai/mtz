@@ -1,8 +1,5 @@
 // ZrkIKcmw2trMdVFUaYtBq2Wr60XDU5fF
 
-const { AutojsUtil } = require("./autojsUtil");
-
-
 const Smms = {
     uploadPic: function (filePath) {
         log("上传SMS %s", filePath)
@@ -31,12 +28,6 @@ const Smms = {
         return url
         {/* <img src="https://s2.loli.net/2024/04/11/mPIAhGQkBaZyuor.png" alt="autojs-11-232941.png"> */ }
     },
-    captureAndUpload: function () {
-        let path = AutojsUtil.captureAndSaveScreen()
-        log(path)
-        return this.uploadPic(path)
-    }
-
 }
 
 

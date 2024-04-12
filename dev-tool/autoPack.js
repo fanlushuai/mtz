@@ -208,17 +208,17 @@ const Autojsx = {
 };
 
 const WeiXin = {
-  sendTo: function (name) {
+  sendTo: function (name, msg) {
     WeiXin.boot();
     click(text(name).findOne());
     sleep(2000);
 
-    let clipContent = Autojsx.getClipX()();
+    // let clipContent = Autojsx.getClipX()();
 
     id("com.tencent.mm:id/bkk") //点击必须使用全id！！！
       .clickable(true)
       .findOne()
-      .setText(clipContent);
+      .setText(msg);
     log("设置输入框");
     sleep(3000);
 
@@ -270,9 +270,12 @@ const Oppo = {
 
     log("上传成功");
     sleep(2000);
-    log("长按复制");
-    let b = desc("复制").findOne();
-    press(b.bounds().centerX(), b.bounds().centerY(), 800);
+    let downloadUrl = descMatches(/(https:.*)/).findOne(10000).desc()
+    log("获取链接 %s", downloadUrl)
+    return downloadUrl
+    // log("长按复制");
+    // let b = desc("复制").findOne();
+    // press(b.bounds().centerX(), b.bounds().centerY(), 800);
   },
 };
 
@@ -327,8 +330,8 @@ function build(projectName) {
 
 function share(apkName) {
   Autojsx.share(apkName);
-  Oppo.sendToWss();
-  WeiXin.sendTo("文件传输助手");
+  let downloadUrl = Oppo.sendToWss();
+  WeiXin.sendTo("文件传输助手", downloadUrl);
 }
 
 share(build("美添赚助手"));

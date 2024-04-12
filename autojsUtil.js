@@ -216,7 +216,8 @@ const AutojsUtil = {
 
       // 截图，保存，并发送。todo 
       log("进行截图")
-      let picUrl = Smms.captureAndUpload()
+      let path = this.captureAndSaveScreen()
+      let picUrl = Smms.uploadPic(path)
 
       if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
         log("发现需要人工接入界面")
