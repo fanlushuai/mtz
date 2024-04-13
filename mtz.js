@@ -229,14 +229,12 @@ const MTZ = {
     log("第一次等待长一点");
     // 需要进去，等待他获取，然后跳入第一篇文章
     AutojsUtil.waitFor(idMatches("activity-name"), 8);
-    log("进入第一篇文章");
 
-
-    let docCount = 0
+    let docCount = 1
 
     while (1) {
 
-      log("等待进入 %s 文章内容，最长等15s", docCount)
+      log("等待进入第 %s 篇文章，最长等15s", docCount)
       let ok = AutojsUtil.waitFor(idMatches("activity-name"), 15);
       if (ok) {
         docCount++
@@ -245,6 +243,8 @@ const MTZ = {
         let randomNum = random(10, 15);
         log("随机阅读 %s 秒", randomNum);
         sleep(randomNum * 1000);
+      } else {
+        log("进入失败")
       }
 
       log("后退");
@@ -261,8 +261,8 @@ const MTZ = {
       }
     }
 
-    log("本轮共阅读 %s 篇", docCount)
-    readStatics.add(DailyStorage.currentAccount, docCount)
+    log("本轮共阅读 %s 篇", docCount - 1)
+    readStatics.add(DailyStorage.currentAccount, docCount - 1)
   },
   getQrPosition: function () {
     log("获取二维码粗略坐标");
