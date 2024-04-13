@@ -215,7 +215,10 @@ const MTZ = {
             futureTime = parseInt(textStr) * 1000 * 60 + new Date().getTime();
           }
 
-          DailyStorage.setReadNextTime(futureTime);
+          log("随机增加一个时间，防止被检测")
+          let futureTimePlus = futureTime + random(2, 6) * 1000 * 60
+
+          DailyStorage.setReadNextTime(futureTimePlus);
         } else {
           log("没有找到剩余时间");
         }
