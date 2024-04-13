@@ -176,7 +176,7 @@ const AutojsUtil = {
         return result;
       }
       tryCount++;
-      log("重试 %s %s", tryCount, retryLimit)
+      log("重试 [%s/%s]", tryCount, retryLimit)
       if (tryCount == retryLimit) {
         return false;
       }
@@ -221,7 +221,6 @@ const AutojsUtil = {
       if (e) {
         return e;
       } else {
-        toast("选择器查找失败");
         log("选择器查找失败 %s", targetName);
 
         if (refreshMethod) {
