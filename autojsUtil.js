@@ -206,8 +206,10 @@ const AutojsUtil = {
       }
     }, 8);
 
-    if (ele == null) {
+
+    if (ele == null || ele == false) {
       log("未找到 %s", targetName)
+      return
     }
 
     return ele
