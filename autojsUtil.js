@@ -1,6 +1,6 @@
 const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush");
-const { uploadPic, Smms } = require("./smms");
+const { Smms } = require("./smms");
 
 const AutojsUtil = {
   randomSleep: function (maxSecend, minSecend) {
@@ -291,6 +291,7 @@ const AutojsUtil = {
     }
 
     log("点 %s", targetName);
+    sleep(400)
     return AutojsUtil.clickEle(ele);
   },
   clickSelector: function (selector, targetName) {
@@ -323,8 +324,11 @@ const AutojsUtil = {
       // return this.press(ele);
       if (ele.clickable()) {
         // log("点元素" + ele);
-        return ele.click();
+        let ok = ele.click()
+        // log("元素点" + ok)
+        return ok;
       } else {
+
         return this.press(ele);
       }
     }
@@ -341,7 +345,7 @@ const AutojsUtil = {
     let x = b.left + halfW;
     let y = b.top + halfH;
     // log("居中 点击 (%d,%d)", x, y);
-    press(x, y, 1);
+    return press(x, y, 1);
   },
   refreshUI: function (appName) {
     log("刷新控件");
