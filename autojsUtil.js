@@ -176,10 +176,37 @@ const AutojsUtil = {
         return result;
       }
       tryCount++;
+      log("重试 %s %s", tryCount, retryLimit)
       if (tryCount == retryLimit) {
         return false;
       }
     }
+  },
+  getEleBySelectorWithRetry: function () {
+    let ele = this.retryGet(function () {
+      log("查 %s", targetName);
+      let e = selector.findOne(findTimeLimitSec * 1000);
+      if (e) {
+        return e;
+      } else {
+        toast("选择器查找失败");
+        log("选择器查找失败 %s", targetName);
+
+        if (refreshMethod) {
+          // 也可以使用自定义方法刷新ui
+          refreshMethod();
+        } else {
+          // 默认使用这种方式刷新ui
+          AutojsUtil.refreshUI(appName);
+        }
+      }
+    }, 8);
+
+    if (ele == null) {
+      log("未找到 %s", targetName)
+    }
+
+    return ele
   },
   getEleBySelectorWithAutoRefresh: function (
     selector,

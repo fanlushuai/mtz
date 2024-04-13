@@ -1,5 +1,6 @@
 const { AutojsUtil } = require("./autojsUtil");
 const { DailyStorage } = require("./dailyStorage");
+const { pushplus } = require("./msgPush");
 const { readStatics } = require("./statics");
 const { WeiXin } = require("./weixin");
 
@@ -141,7 +142,7 @@ const MTZ = {
 
     log("参加文章阅读推荐");
 
-    let ele = AutojsUtil.getEleBySelectorWithAutoRefresh(
+    let ele = AutojsUtil.getEleBySelectorWithRetry(
       text("文章阅读推荐"),
       "文章阅读推荐",
       5,
@@ -156,6 +157,7 @@ const MTZ = {
       log("没有发现文章阅读推荐");
       log("设置此账号休息一个半小时，怎么会没有呢？？");
 
+      pushplus.push("没有发现阅读活动跳过", "没有发现阅读活动")
       let now = new Date();
       now.setHours(now.getHours() + 1.5);
 
