@@ -237,13 +237,15 @@ const MTZ = {
     while (1) {
 
       log("等待进入 %s 文章内容，最长等15s", docCount)
-      AutojsUtil.waitFor(idMatches("activity-name"), 15);
-      docCount++
-      log("已进入 %s", docCount)
+      let ok = AutojsUtil.waitFor(idMatches("activity-name"), 15);
+      if (ok) {
+        docCount++
+        log("已进入 %s", docCount)
 
-      let randomNum = random(10, 15);
-      log("随机阅读 %s 秒", randomNum);
-      sleep(randomNum * 1000);
+        let randomNum = random(10, 15);
+        log("随机阅读 %s 秒", randomNum);
+        sleep(randomNum * 1000);
+      }
 
       log("后退");
       back();
@@ -259,7 +261,7 @@ const MTZ = {
       }
     }
 
-    log("本轮一共阅读了 %s 篇", docCount)
+    log("本轮共阅读 %s 篇", docCount)
     readStatics.add(DailyStorage.currentAccount, docCount)
   },
   getQrPosition: function () {

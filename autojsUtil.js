@@ -182,7 +182,11 @@ const AutojsUtil = {
       }
     }
   },
-  getEleBySelectorWithRetry: function () {
+  getEleBySelectorWithRetry: function (selector,
+    targetName,
+    findTimeLimitSec,
+    appName,
+    refreshMethod) {
     let ele = this.retryGet(function () {
       log("查 %s", targetName);
       let e = selector.findOne(findTimeLimitSec * 1000);
@@ -508,12 +512,12 @@ const AutojsUtil = {
     let startTime = new Date().getTime();
     while (1) {
       if (selector.exists()) {
-        log("发现目标");
+        log("出现目标");
         return true;
       }
 
       if (new Date().getTime() - startTime > timeoutSec * 1000) {
-        log("超时");
+        log("等待超时");
         break;
       }
 
