@@ -249,11 +249,11 @@ const AutojsUtil = {
       if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
         log("发现需要人工接入界面")
         // pushplus.push("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount);
-        pushplus.pushFailCapture("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount, picUrl);
+        pushplus.pushFailCapture("已退出脚本", targetName + " 查找失败!" + "请马上手动验证账号 " + DailyStorage.currentAccount, picUrl);
         log("脚本退出")
         exit()
       } else {
-        pushplus.pushFailCapture("重启脚本", "非预期元素 " + DailyStorage.currentAccount, picUrl);
+        pushplus.pushFailCapture("重启脚本", targetName + " 查找失败!" + "非预期元素 " + DailyStorage.currentAccount, picUrl);
       }
 
       log("等待1分钟，再重启。等待工作人员前来查看日志")
