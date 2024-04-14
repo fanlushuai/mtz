@@ -214,6 +214,9 @@ const AutojsUtil = {
 
     return ele
   },
+
+
+
   getEleBySelectorWithAutoRefresh: function (
     selector,
     targetName,
@@ -323,23 +326,62 @@ const AutojsUtil = {
       return false;
     }
   },
+  shell: function () {
+    return {
+      点击: (x, y) => shell("input tap " + x + " " + y),
+
+      滑动: (x, y, xx, yy, d) => shell("input swipe " + x + " " + y + " " + xx + " " + yy + " " + d),
+
+      输入: (str) => shell("input text " + str),
+
+      模拟: (str) => shell("input keyevent " + str)
+    }
+  },
+  clickByShell: function (x, y) {
+
+    if (this.shell().点击(x, y).code != 0) {
+      log("点击失败")
+      return false
+    }
+
+    return true
+
+  },
+  clickEleByShell: function (ele) {
+
+    if (ele == null || ele == undefined) {
+      log("无元素，不点击")
+      return
+    }
+
+    let b = ele.bounds()
+
+    let x = random(b.left + 1, b.right - 1)
+    let y = random(b.top + 1, b.bottom - 1)
+
+    this.clickByShell(x, y)
+  },
   clickEle: function (ele) {
-    // log(ele)
-    if (ele) {
-      // return this.press(ele);
+
+    if (ele == null || ele == undefined) {
+      log("无元素")
+      return false
+    }
+
+    let shellMode = true
+
+    if (shellMode) {
+      this.clickEleByShell(ele)
+    } else {
       if (ele.clickable()) {
         // log("点元素" + ele);
         let ok = ele.click()
         // log("元素点" + ok)
         return ok;
       } else {
-
         return this.press(ele);
       }
     }
-
-    log("没有元素，点个毛线");
-    return false;
   },
   press: function (ele) {
     let b = ele.bounds();
@@ -647,13 +689,13 @@ const AutojsUtil = {
         /(.{0,3}强.{0,3}|.{0,3}停.{0,3}|.{0,3}结.{0,3}|.{0,3}行.{0,3})/
       ).findOnce();
       if (is_sure) {
-        is_sure.click();
+        AutojsUtil.clickEle(is_sure)
         sleep(random(500, 600));
       }
 
       let b = textMatches(/(.*确.*|.*定.*)/).findOnce();
       if (b) {
-        b.click();
+        AutojsUtil.clickEle(b)
         sleep(random(500, 600));
         return true;
       }
@@ -682,7 +724,7 @@ const AutojsUtil = {
         //由于系统间同意授权的文本不同，采用正则表达式
         let Allow = textMatches(/(允许|立即开始|统一)/).findOne(10 * 1000);
         if (Allow) {
-          Allow.click();
+          AutojsUtil.clickEle(Allow)
         }
       } else {
         log("未发现权限服务调用");

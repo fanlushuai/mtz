@@ -323,7 +323,7 @@ const MTZ = {
     userIdEditEle.setText(userId);
 
     log("确认");
-    text("确认").clickable(true).findOne().click();
+    AutojsUtil.clickEle(text("确认").clickable(true).findOne())
 
     log("等待提现成功");
     sleep(4000); //todo 等待提现成功
@@ -363,7 +363,7 @@ const MTZ = {
     x[3].setText(this.withdrawPW);
 
     log("确认");
-    text("确认").clickable(true).findOne().click();
+    AutojsUtil.clickEle(text("确认").clickable(true).findOne())
 
     sleep(3000);
 
