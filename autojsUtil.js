@@ -78,6 +78,8 @@ const AutojsUtil = {
       )
     );
 
+    window.setPosition(0, 100);
+
     window.exitOnClose(); //注册退出，退出脚本
 
     // setInterval(() => { }, 1000);
@@ -176,17 +178,19 @@ const AutojsUtil = {
         return result;
       }
       tryCount++;
-      log("重试 [%s/%s]", tryCount, retryLimit)
+      log("重试 [%s/%s]", tryCount, retryLimit);
       if (tryCount == retryLimit) {
         return false;
       }
     }
   },
-  getEleBySelectorWithRetry: function (selector,
+  getEleBySelectorWithRetry: function (
+    selector,
     targetName,
     findTimeLimitSec,
     appName,
-    refreshMethod) {
+    refreshMethod
+  ) {
     let ele = this.retryGet(function () {
       log("查 %s", targetName);
       let e = selector.findOne(findTimeLimitSec * 1000);
@@ -206,13 +210,12 @@ const AutojsUtil = {
       }
     }, 8);
 
-
     if (ele == null || ele == false) {
-      log("未找到 %s", targetName)
-      return
+      log("未找到 %s", targetName);
+      return;
     }
 
-    return ele
+    return ele;
   },
   getEleBySelectorWithAutoRefresh: function (
     selector,
@@ -242,30 +245,48 @@ const AutojsUtil = {
     if (!ele) {
       // alert("选择器查找失败");
       console.warn("选择器查找彻底失败");
-      console.log("尝试判断，是否为需要人工接入的页面")
+      console.log("尝试判断，是否为需要人工接入的页面");
       // 杀掉app，重启app
       // 判断是否包含验证文字。
 
-      // 截图，保存，并发送。todo 
-      log("进行截图")
-      let path = this.captureAndSaveScreen()
-      let picUrl = Smms.uploadPic(path)
+      // 截图，保存，并发送。todo
+      log("进行截图");
+      let path = this.captureAndSaveScreen();
+      let picUrl = Smms.uploadPic(path);
 
-      if (textMatches(/(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/).findOne(3000)) {
-        log("发现需要人工接入界面")
+      if (
+        textMatches(
+          /(.*验证.*微信.*| .*同意并继续.*| .*请填写微信密码.* | .*紧急冻结.*)/
+        ).findOne(3000)
+      ) {
+        log("发现需要人工接入界面");
         // pushplus.push("已退出脚本", "请马上手动验证账号 " + DailyStorage.currentAccount);
-        pushplus.pushFailCapture("已退出脚本", targetName + " 查找失败!" + "请马上手动验证账号 " + DailyStorage.currentAccount, picUrl);
-        log("脚本退出")
-        exit()
+        pushplus.pushFailCapture(
+          "已退出脚本",
+          targetName +
+            " 查找失败!" +
+            "请马上手动验证账号 " +
+            DailyStorage.currentAccount,
+          picUrl
+        );
+        log("脚本退出");
+        exit();
       } else {
-        pushplus.pushFailCapture("重启脚本", targetName + " 查找失败!" + "非预期元素 " + DailyStorage.currentAccount, picUrl);
+        pushplus.pushFailCapture(
+          "重启脚本",
+          targetName +
+            " 查找失败!" +
+            "非预期元素 " +
+            DailyStorage.currentAccount,
+          picUrl
+        );
       }
 
-      log("等待1分钟，再重启。等待工作人员前来查看日志")
-      sleep(1.5 * 60 * 1000)
+      log("等待1分钟，再重启。等待工作人员前来查看日志");
+      sleep(1.5 * 60 * 1000);
 
       AutojsUtil.reloadApp("微信");
-      sleep(2000)
+      sleep(2000);
       // 重新开始执行
       AutojsUtil.execScriptFile("./scriptTask.js", { delay: 5000 });
 
@@ -296,7 +317,7 @@ const AutojsUtil = {
     }
 
     log("点 %s", targetName);
-    sleep(400)
+    sleep(400);
     return AutojsUtil.clickEle(ele);
   },
   clickSelector: function (selector, targetName) {
@@ -329,11 +350,10 @@ const AutojsUtil = {
       // return this.press(ele);
       if (ele.clickable()) {
         // log("点元素" + ele);
-        let ok = ele.click()
+        let ok = ele.click();
         // log("元素点" + ok)
         return ok;
       } else {
-
         return this.press(ele);
       }
     }
@@ -537,7 +557,7 @@ const AutojsUtil = {
     );
     w.setTouchable(false);
     w.setSize(-1, -1);
-    setInterval(() => { }, 1000);
+    setInterval(() => {}, 1000);
 
     let paint = new Paint();
     //设置画笔为填充，则绘制出来的图形都是实心的
@@ -587,12 +607,12 @@ const AutojsUtil = {
     console.log("强制重启 %s", appName);
     while (1) {
       if (this.killApp(appName)) {
-        break
+        break;
       }
-    };
+    }
 
     app.launchApp(appName);
-    sleep(3000)
+    sleep(3000);
   },
   killApp: function (name) {
     let packageName = getPackageName(name) || getAppName(name);
@@ -610,7 +630,7 @@ const AutojsUtil = {
       log("打开 %s 设置", textName);
 
       app.openAppSetting(packageName);
-      log("等待打开设置")
+      log("等待打开设置");
       startTime = new Date().getTime();
       while (new Date().getTime() - startTime < 6000) {
         sleep(500);
@@ -639,7 +659,7 @@ const AutojsUtil = {
 
     sleep(random(800, 1000));
     back();
-    return true
+    return true;
 
     // 盲点
     function stop() {
@@ -701,21 +721,27 @@ const AutojsUtil = {
     }
   }),
   getCurrrentScreenBase64() {
-    log("截图")
-    let img = captureScreen()
-    return images.toBase64(img, "png", 1)
+    log("截图");
+    let img = captureScreen();
+    return images.toBase64(img, "png", 1);
   },
   captureAndSaveScreen() {
-    AutojsUtil.autoPermisionScreenCapture()
-    sleep(1000)
-    let imageName = "autojs-" + new Date().getDate() + "-" + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + ".png"
+    AutojsUtil.autoPermisionScreenCapture();
+    sleep(1000);
+    let imageName =
+      "autojs-" +
+      new Date().getDate() +
+      "-" +
+      new Date().getHours() +
+      new Date().getMinutes() +
+      new Date().getSeconds() +
+      ".png";
     var path = "/sdcard/autojs/" + imageName; //确保路径存在
-    log("截图并保存")
-    log(path)
+    log("截图并保存");
+    log(path);
     captureScreen(path);
-    return path
-  }
-
+    return path;
+  },
 };
 
 function once(fn, context) {
@@ -732,7 +758,6 @@ function once(fn, context) {
     return result;
   });
 }
-
 
 module.exports = {
   AutojsUtil,

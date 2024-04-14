@@ -239,8 +239,8 @@ const MTZ = {
       log("等待进入第 %s 篇文章，最长等15s", docCount);
       let ok = AutojsUtil.waitFor(idMatches("activity-name"), 20);
       if (ok) {
-        docCount++;
         log("已进入 %s", docCount);
+        docCount++;
 
         let randomNum = random(10, 15);
         log("随机阅读 %s 秒", randomNum);
