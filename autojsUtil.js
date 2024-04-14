@@ -267,9 +267,9 @@ const AutojsUtil = {
         pushplus.pushFailCapture(
           "已退出脚本",
           targetName +
-            " 查找失败!" +
-            "请马上手动验证账号 " +
-            DailyStorage.currentAccount,
+          " 查找失败!" +
+          "请马上手动验证账号 " +
+          DailyStorage.currentAccount,
           picUrl
         );
         log("脚本退出");
@@ -278,9 +278,9 @@ const AutojsUtil = {
         pushplus.pushFailCapture(
           "重启脚本",
           targetName +
-            " 查找失败!" +
-            "非预期元素 " +
-            DailyStorage.currentAccount,
+          " 查找失败!" +
+          "非预期元素 " +
+          DailyStorage.currentAccount,
           picUrl
         );
       }
@@ -349,19 +349,21 @@ const AutojsUtil = {
   },
   shell: function () {
     return {
-      点击: (x, y) => shell("input tap " + x + " " + y),
+      点击: (x, y) => shell("input tap " + x + " " + y, false),
 
-      滑动: (x, y, xx, yy, d) => shell("input swipe " + x + " " + y + " " + xx + " " + yy + " " + d),
+      滑动: (x, y, xx, yy, d) => shell("input swipe " + x + " " + y + " " + xx + " " + yy + " " + d, false),
 
-      输入: (str) => shell("input text " + str),
+      输入: (str) => shell("input text " + str, false),
 
-      模拟: (str) => shell("input keyevent " + str)
+      模拟: (str) => shell("input keyevent " + str, false)
     }
   },
   clickByShell: function (x, y) {
+    let result = this.shell().点击(x, y)
 
-    if (this.shell().点击(x, y).code != 0) {
+    if (result.code != 0) {
       log("点击失败")
+      log(result)
       return false
     }
 
@@ -389,7 +391,8 @@ const AutojsUtil = {
       return false
     }
 
-    let shellMode = true
+    // 快速切换，shell点击模式，或者无障碍模式
+    let shellMode = false
 
     if (shellMode) {
       this.clickEleByShell(ele)
@@ -600,7 +603,7 @@ const AutojsUtil = {
     );
     w.setTouchable(false);
     w.setSize(-1, -1);
-    setInterval(() => {}, 1000);
+    setInterval(() => { }, 1000);
 
     let paint = new Paint();
     //设置画笔为填充，则绘制出来的图形都是实心的
