@@ -186,10 +186,7 @@ const WeiXin = {
     sleep(1500);
   },
   back2Settings: function () {
-    // 有时候无脑back会失败。所以，尝试刷新一下，再搞
-    WeiXin.refreshWeb();
-
-    AutojsUtil.testAndBack(
+    let ok = AutojsUtil.testAndBack(
       function () {
         // return id("title").text("设置").findOnce() != null
 
@@ -201,14 +198,30 @@ const WeiXin = {
       10,
       WeiXin.backTab
     );
-  },
-  back2SettingsFromAcc: function () {
-    this.backTab();
-    this.backTab();
+
+    if (!ok) {
+      log("尝试 back()函数");
+      AutojsUtil.refreshUI("微信");
+
+      AutojsUtil.testAndBack(
+        function () {
+          // return id("title").text("设置").findOnce() != null
+
+          // return text("发现").findOnce() != null
+          // return id("ouv").findOnce() != null
+          sleep(500);
+          return !desc("返回").exists();
+        },
+        6,
+        function () {
+          back();
+        }
+      );
+    }
   },
   refreshWeb: function () {
     log("刷新网页");
-    AutojsUtil.clickSelectorWithAutoRefresh(id("coz"), "。。。", 10, this.name)
+    AutojsUtil.clickSelectorWithAutoRefresh(id("coz"), "。。。", 10, this.name);
     sleep(1.5 * 1000);
     AutojsUtil.clickSelectorWithAutoRefresh(
       id("obc").text("刷新"),

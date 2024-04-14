@@ -157,7 +157,7 @@ const MTZ = {
       log("没有发现文章阅读推荐");
       log("设置此账号休息一个半小时，怎么会没有呢？？");
 
-      pushplus.push("没有发现阅读活动跳过", "没有发现阅读活动")
+      pushplus.push("没有发现阅读活动跳过", "没有发现阅读活动");
       let now = new Date();
       now.setHours(now.getHours() + 1.5);
 
@@ -215,8 +215,8 @@ const MTZ = {
             futureTime = parseInt(textStr) * 1000 * 60 + new Date().getTime();
           }
 
-          log("随机增加一个时间，防止被检测")
-          let futureTimePlus = futureTime + random(2, 6) * 1000 * 60
+          log("随机增加一个时间，防止被检测");
+          let futureTimePlus = futureTime + random(2, 6) * 1000 * 60;
 
           DailyStorage.setReadNextTime(futureTimePlus);
         } else {
@@ -233,26 +233,25 @@ const MTZ = {
     // 需要进去，等待他获取，然后跳入第一篇文章
     AutojsUtil.waitFor(idMatches("activity-name"), 8);
 
-    let docCount = 1
+    let docCount = 1;
 
     while (1) {
-
-      log("等待进入第 %s 篇文章，最长等15s", docCount)
-      let ok = AutojsUtil.waitFor(idMatches("activity-name"), 15);
+      log("等待进入第 %s 篇文章，最长等15s", docCount);
+      let ok = AutojsUtil.waitFor(idMatches("activity-name"), 20);
       if (ok) {
-        docCount++
-        log("已进入 %s", docCount)
+        log("已进入 %s", docCount);
+        docCount++;
 
         let randomNum = random(10, 15);
         log("随机阅读 %s 秒", randomNum);
         sleep(randomNum * 1000);
       } else {
-        log("进入失败")
+        log("进入失败");
       }
 
       log("后退");
       back();
-      log("等待被动刷新")
+      log("等待被动刷新");
 
       let yetBackEle = text("长按或截图保存推广海报").findOne(4 * 1000);
       if (yetBackEle) {
@@ -264,8 +263,8 @@ const MTZ = {
       }
     }
 
-    log("本轮共阅读 %s 篇", docCount - 1)
-    readStatics.add(DailyStorage.currentAccount, docCount - 1)
+    log("本轮共阅读 %s 篇", docCount - 1);
+    readStatics.add(DailyStorage.currentAccount, docCount - 1);
   },
   getQrPosition: function () {
     log("获取二维码粗略坐标");

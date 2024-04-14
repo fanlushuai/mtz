@@ -100,20 +100,7 @@ const Robot = {
       log("当前账号和目标账号一样");
       // sleep(5 * 60 * 1000);
       log("回退到首页");
-      // WeiXin.back2Settings();
-
-      AutojsUtil.testAndBack(
-        function () {
-          // return id("title").text("设置").findOnce() != null
-
-          // return text("发现").findOnce() != null
-          // return id("ouv").findOnce() != null
-          sleep(800);
-          return !desc("返回").exists();
-        },
-        10,
-        WeiXin.backTab
-      );
+      WeiXin.back2Settings();
 
       return;
     }
@@ -154,6 +141,8 @@ const Robot = {
       sleep(1000);
     }
 
+    // 有时候无脑back会失败。所以，尝试刷新一下，再搞
+    WeiXin.refreshWeb();
     WeiXin.back2Settings();
   },
   taskSwichAcc: function () {
@@ -172,14 +161,14 @@ const Robot = {
       log("当前微信账号 %s", DailyStorage.currentAccount);
 
       if (!DailyStorage.yetReportYesterday()) {
-        log("开始 报告数据")
-        let staticsLog = readStatics.getYesterdayReport()
+        log("开始 报告数据");
+        let staticsLog = readStatics.getYesterdayReport();
         if (staticsLog && staticsLog != "") {
-          pushplus.push("昨日数据统计", staticsLog)
+          pushplus.push("昨日数据统计", staticsLog);
           // 清空之后，就不会重复发送了。
-          readStatics.clearYesterdayStatics()
+          readStatics.clearYesterdayStatics();
         }
-        DailyStorage.setReportYesterday()
+        DailyStorage.setReportYesterday();
       }
 
       if (
@@ -194,8 +183,6 @@ const Robot = {
         this.taskMTZ(); // 签到，阅读互动，提款、提积分
       }
       this.taskSwichAcc();
-
-      // WeiXin.back2SettingsFromAcc()
     }
   },
 };
