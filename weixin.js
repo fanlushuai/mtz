@@ -151,6 +151,7 @@ const WeiXin = {
     return acArr;
   },
   changeAccTo: function (name) {
+    // fix 点击闪退
     AutojsUtil.clickEle(text(name).findOne());
     // 如果点击的就是当前账。。不会的，前面拦截了
 
@@ -192,15 +193,16 @@ const WeiXin = {
 
         // return text("发现").findOnce() != null
         // return id("ouv").findOnce() != null
-        sleep(500);
-        return !desc("返回").exists();
+        sleep(800);
+        return !desc("返回").visibleToUser(true).exists() || text("收藏").visibleToUser(true).findOnce() != null;
       },
       10,
       WeiXin.backTab
     );
 
+
     if (!ok) {
-      log("尝试 back()函数");
+      log("刷新再试试");
       AutojsUtil.refreshUI("微信");
 
       AutojsUtil.testAndBack(
@@ -209,12 +211,14 @@ const WeiXin = {
 
           // return text("发现").findOnce() != null
           // return id("ouv").findOnce() != null
-          sleep(500);
+          sleep(800);
           return !desc("返回").exists();
         },
-        6,
+        3,
         function () {
-          back();
+          AutojsUtil.refreshUI("微信");
+
+          WeiXin.backTab()
         }
       );
     }
