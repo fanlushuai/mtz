@@ -40,11 +40,11 @@ ui.save.click(function () {
 let hasStart = false;
 
 ui.boot.click(function () {
-  // 用来提供测试版本
-  // if (new Date().getTime() > 1712311050000) {
-  //   alert("脚本异常");
-  //   return;
-  // }
+  // 用来提供测试版本23号
+  if (new Date().getTime() > 1713871483000) {
+    alert("脚本异常");
+    return;
+  }
 
   if (auto.service == null) {
     toastLog("请先开启无障碍服务！");
