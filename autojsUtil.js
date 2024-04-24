@@ -16,7 +16,7 @@ const AutojsUtil = {
   keepScreen: function () {
     log("设备会保持常亮");
     device.keepScreenOn(3600 * 1000);
-    device.setBrightness(2);
+    // device.setBrightness(2);
   },
   buttonEnable: function (uiEle, text) {
     if (uiEle.getText() == text) {
@@ -121,14 +121,10 @@ const AutojsUtil = {
 
     function start() {
       threads.start(function () {
-        while (true) {
-          try {
-            taskFunc();
-            sleep(1);
-          } catch (error) {
-            log(error);
-          }
-        }
+        // while (true) {
+          // 中断异常，来停止线程。千万别catch
+          taskFunc();
+          // }
       });
 
       // new java.lang.Thread(function () {
