@@ -85,6 +85,7 @@ const AutojsUtil = {
     // setInterval(() => { }, 1000);
 
     let x, y, windowX, windowY, downTime;
+
     window.action.setOnTouchListener(function (view, event) {
       let callProp0 = event.getAction();
       if (event.ACTION_DOWN === callProp0) {
@@ -116,54 +117,35 @@ const AutojsUtil = {
       }
     });
 
+
+    let th
+
     // 立即启动
     start();
 
     function start() {
-      threads.start(function () {
+      // 新线程中启动？？？？
+      th = threads.start(function () {
         // while (true) {
-          // 中断异常，来停止线程。千万别catch
-          taskFunc();
-          // }
+        // 中断异常，来停止线程。千万别catch
+        taskFunc();
+        // }
       });
-
-      // new java.lang.Thread(function () {
-      //   //耗时间的代码放这里
-      //   while (true) {
-      //     try {
-      //       taskFunc();
-      //       sleep(1);
-      //     } catch (error) {
-      //       log(error);
-      //     }
-      //   }
-      // }).start();
     }
 
     function onClick() {
-      if (window.action.text() != "开始") {
-        //当前 操作是停止
-        // threads.shutDownAll(); //停止
-        // // 直接隐藏按钮。结束了。
-        // window.close();
+      var actionText = window.action.text();
 
-        // 停止自己
-        engines.myEngine().forceStop();
-
-        // exit();
-        // window.action.setText("开始");
-        // window.action.setBackgroundColor(
-        //     AutojsUtil.反色(window.action.getBackground().getColor())
-        // );
-      } else {
-        //否则，就是开始。
-        //不让开始了
-        // start();
-        // window.action.setText("停止");
-        // window.action.setBackgroundColor(
-        //     AutojsUtil.反色(window.action.getBackground().getColor())
-        // );
+      if (actionText === "停") {
+        // 执行停止操作
+        // th.interrupt(); // 如果确实需要停止所有线程
+        // 停止所有子线程
+        // 通过threads.start()启动的所有线程会在脚本被强制停止时自动停止。
+        threads.shutDownAll()
+        sleep(2000)
+        AutojsUtil.stopCurrentScriptEngine(); // 假设有一个更优雅的停止方法
       }
+
     }
   },
   retryGet: function (func, retryLimit) {
@@ -784,6 +766,18 @@ const AutojsUtil = {
     captureScreen(path);
     return path;
   },
+  onChildStop: function (func) {
+    events.broadcast.on("childStop", func);
+  },
+  childStop: function () {
+    events.broadcast.emit("childStop", "子线程要停了");
+  },
+  onFatherStop: function (func) {
+    events.broadcast.on("fatherStop", func);
+  },
+  fatherStop: function () {
+    events.broadcast.emit("fatherStop", "主线程要停了");
+  }
 };
 
 function once(fn, context) {

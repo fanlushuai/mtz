@@ -57,9 +57,8 @@ ui.boot.click(function () {
 
   if (!hasStart) {
     hasStart = true;
-    threads.start(function () {
-      log("启动脚本引擎");
-      exectuion = engines.execScriptFile("./scriptTask.js"); //简单的例子
-    });
+    log("启动脚本 scirptTask.js");
+    // 将会在新线程中执行
+    exectuion = engines.execScriptFile("./scriptTask.js"); //简单的例子
   }
 });

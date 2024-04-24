@@ -1,3 +1,5 @@
+const { AutojsUtil } = require("./autojsUtil.js");
+
 const Autojsx = {
   boot: function () {
     home();
