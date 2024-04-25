@@ -1,26 +1,23 @@
 const { AutojsUtil } = require("./autojsUtil");
 const { WeiXin } = require("./weixin");
 
-let t=text("文章阅读推荐").findOne(10000)
-// let t=text("111311").findOne(1000)
-// log(t)
-// log(t)
+// WeiXin.back2Settings()
 
-log(t==null)
-// log(t==false)
-// log("{}"==t)
-// log(t.text())
-// log(t.parent())
 
-// let ele = AutojsUtil.getEleBySelectorWithRetry(
-//     text("文章阅读推荐"),
-//     "文章阅读推荐",
-//     5,
-//     "微信",
-//     function () {
-//       WeiXin.refreshWeb();
-//     }
+// // let ok = AutojsUtil.testAndBack(
+// //     function () {
+// //       // return id("title").text("设置").findOnce() != null
+
+// //       // return text("发现").findOnce() != null
+// //       // return id("ouv").findOnce() != null
+// //       sleep(800);
+// let  ok=!desc("返回").visibleToUser(true).exists() && !text("个人信息与权限").visibleToUser(true).exists()
+// return ok
+//     },
+//     10,
+//     WeiXin.backTab
 //   );
 
-//   log("1111111")
-//   log(ele)
+// log(!desc("返回").visibleToUser(true).exists() && !text("个人信息与权限").visibleToUser(true).exists())
+// // log(text("收藏").visibleToUser(true).findOnce() != null)
+// log()

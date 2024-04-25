@@ -184,7 +184,7 @@ const WeiXin = {
     // AutojsUtil.clickEle(id("actionbar_up_indicator_btn"))
     log("左上返回");
     AutojsUtil.clickEle(desc("返回").findOne().parent());
-    sleep(1500);
+    sleep(1000);
   },
   back2Settings: function () {
     let ok = AutojsUtil.testAndBack(
@@ -194,11 +194,15 @@ const WeiXin = {
         // return text("发现").findOnce() != null
         // return id("ouv").findOnce() != null
         sleep(800);
-        return !desc("返回").visibleToUser(true).exists() || text("收藏").visibleToUser(true).findOnce() != null;
+        let ok = !desc("返回").visibleToUser(true).exists() && !text("个人信息与权限").visibleToUser(true).exists()
+        return ok
+        // return !desc("返回").visibleToUser(true).exists() || text("收藏").visibleToUser(true).findOnce() != null;
       },
       10,
       WeiXin.backTab
     );
+
+    sleep(1000)
 
 
     if (!ok) {
