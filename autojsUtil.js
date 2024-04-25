@@ -140,20 +140,29 @@ const AutojsUtil = {
     log("开启worker 线程")
 
     threads.start(()=>{
-      taskFunc()
+      try {
+        taskFunc()
+      } catch (error) {
+        log("异常结束")
+      }
     })
   },
   retryGet: function (func, retryLimit) {
     let tryCount = 0;
     while (1) {
       let result = func();
+      log("返回 %j",result)
       if (result) {
+        log("返回2 %j",result)
+
         return result;
       }
       tryCount++;
       log("重试 [%s/%s]", tryCount, retryLimit);
       if (tryCount == retryLimit) {
-        return false;
+        log("重试结束，未找到")
+        // 返回为null
+        return result;
       }
     }
   },
@@ -166,7 +175,9 @@ const AutojsUtil = {
   ) {
     let ele = this.retryGet(function () {
       log("查 %s", targetName);
+      // 找不到返回null
       let e = selector.findOne(findTimeLimitSec * 1000);
+
       if (e) {
         return e;
       } else {
@@ -183,7 +194,8 @@ const AutojsUtil = {
       }
     }, 8);
 
-    if (ele == null || ele == false) {
+    // if (ele == null || ele == false) {   ele 返回的对象，不能直接和false进行对比！！！，不然报错
+    if (ele == null) {
       log("未找到 %s", targetName);
       return;
     }
@@ -249,7 +261,7 @@ const AutojsUtil = {
         exit();
       } else {
         pushplus.pushFailCapture(
-          "重启脚本",
+          "即将自动重启脚本",
           targetName +
           " 查找失败!" +
           "非预期元素 " +

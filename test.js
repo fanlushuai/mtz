@@ -1,22 +1,26 @@
+const { AutojsUtil } = require("./autojsUtil");
+const { WeiXin } = require("./weixin");
 
-// // const { pushplus } = require("./msgPush");
+let t=text("文章阅读推荐").findOne(10000)
+// let t=text("111311").findOne(1000)
+// log(t)
+// log(t)
 
-// const { AutojsUtil } = require("./autojsUtil");
+log(t==null)
+// log(t==false)
+// log("{}"==t)
+// log(t.text())
+// log(t.parent())
 
-// // const { Smms } = require("./smms");
+// let ele = AutojsUtil.getEleBySelectorWithRetry(
+//     text("文章阅读推荐"),
+//     "文章阅读推荐",
+//     5,
+//     "微信",
+//     function () {
+//       WeiXin.refreshWeb();
+//     }
+//   );
 
-
-// // pushplus.pushFailCapture("test", "ahah", Smms.captureAndUpload())
-
-
-// // log(descMatches(/(https:.*)/).findOne(10000).desc())
-
-// // AutojsUtil.clickByShell(100,200)
-
-// let result=new Shell().exec("su -c 'settings put global airplane_mode_on 1; am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true'")
-// log(result)
-
-
-let config = storages.create("changxing");
-
-config.clear()
+//   log("1111111")
+//   log(ele)
