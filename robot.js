@@ -187,8 +187,6 @@ const Robot = {
   },
 };
 
-// Robot.taskSwichAcc()
-
 module.exports = {
   Robot,
 };

@@ -118,35 +118,30 @@ const AutojsUtil = {
     });
 
 
-    let th
 
-    // 立即启动
-    start();
-
-    function start() {
-      // 新线程中启动？？？？
-      th = threads.start(function () {
-        // while (true) {
-        // 中断异常，来停止线程。千万别catch
-        taskFunc();
-        // }
-      });
-    }
 
     function onClick() {
-      var actionText = window.action.text();
+      let actionText = window.action.text();
 
       if (actionText === "停") {
         // 执行停止操作
-        // th.interrupt(); // 如果确实需要停止所有线程
         // 停止所有子线程
         // 通过threads.start()启动的所有线程会在脚本被强制停止时自动停止。
         threads.shutDownAll()
-        sleep(2000)
-        AutojsUtil.stopCurrentScriptEngine(); // 假设有一个更优雅的停止方法
+        AutojsUtil.childStop()
+        // sleep(2000)
+
+        // AutojsUtil.stopCurrentScriptEngine(); // 假设有一个更优雅的停止方法
       }
 
     }
+
+    // 立即启动
+    log("开启worker 线程")
+
+    threads.start(()=>{
+      taskFunc()
+    })
   },
   retryGet: function (func, retryLimit) {
     let tryCount = 0;
@@ -706,7 +701,7 @@ const AutojsUtil = {
   stopCurrentScriptEngine: function () {
     log("开始停止当前脚本引擎");
     engines.all().map((ScriptEngine) => {
-      log("存在的脚本引擎 %s", engines.myEngine().toString());
+      // log("存在的脚本引擎 %s", engines.myEngine().toString());
       if (engines.myEngine().toString() == ScriptEngine.toString()) {
         log("停止当前脚本引擎 %s", engines.myEngine().toString());
         engines.myEngine().forceStop();

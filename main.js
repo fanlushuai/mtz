@@ -19,6 +19,13 @@ function revoverBootButton() {
   }
 }
 
+AutojsUtil.onChildStop(() => {
+  1111
+  log("main停止所有子线程")
+  threads.shutDownAll()
+})
+
+
 ui.emitter.on("resume", function () {
   revoverBootButton();
   hasStart = false;

@@ -13,8 +13,18 @@ Config.loadConfig();
 //   engines.myEngine().forceStop()
 // })
 
+
+
+AutojsUtil.onChildStop(() => {
+  log("scriptTask停止所有子线程")
+  threads.shutDownAll()
+
+  engines.myEngine().forceStop();
+})
+
 AutojsUtil.AddFloatContrlButton(function () {
-  Robot.start();
+  Robot.start()
 });
+
 
 
