@@ -152,9 +152,6 @@ const MTZ = {
       }
     );
 
-    log("1111111")
-    log(ele)
-
     if (ele == null) {
       // 有时候账号没有，文章阅读选项
       log("没有发现文章阅读推荐");
@@ -170,9 +167,6 @@ const MTZ = {
 
     let maxRetryTimes = 5;
     let retry = 0;
-
-    log("xxxxxxxxxxxxx")
-    log(ele)
 
     while (1) {
       let eles = ele.parent().find(text("开始活动"));
