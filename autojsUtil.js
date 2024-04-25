@@ -151,10 +151,7 @@ const AutojsUtil = {
     let tryCount = 0;
     while (1) {
       let result = func();
-      log("返回 %j",result)
       if (result) {
-        log("返回2 %j",result)
-
         return result;
       }
       tryCount++;
