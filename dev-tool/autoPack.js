@@ -262,7 +262,7 @@ const Oppo = {
 
     log("上传成功");
     sleep(2000);
-    let downloadUrl = descMatches(/(https:.*)/).findOne(10000).desc()
+    let downloadUrl = descMatches(/(https:.*)/).findOne(20000).desc()
     log("获取链接 %s", downloadUrl)
     return downloadUrl
     // log("长按复制");
