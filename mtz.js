@@ -231,6 +231,15 @@ const MTZ = {
     log("开始阅读");
 
     log("第一次等待长一点");
+
+    // 判断是否存在，继续访问。安全限制。
+
+    let eleError = text("继续访问").findOne(8000);
+    if (eleError != null) {
+      log("点击 继续访问");
+      AutojsUtil.clickEle(eleError);
+    }
+
     // 需要进去，等待他获取，然后跳入第一篇文章
     AutojsUtil.waitFor(idMatches("activity-name"), 8);
 
@@ -323,7 +332,7 @@ const MTZ = {
     userIdEditEle.setText(userId);
 
     log("确认");
-    AutojsUtil.clickEle(text("确认").clickable(true).findOne())
+    AutojsUtil.clickEle(text("确认").clickable(true).findOne());
 
     log("等待提现成功");
     sleep(4000); //todo 等待提现成功
@@ -363,7 +372,7 @@ const MTZ = {
     x[3].setText(this.withdrawPW);
 
     log("确认");
-    AutojsUtil.clickEle(text("确认").clickable(true).findOne())
+    AutojsUtil.clickEle(text("确认").clickable(true).findOne());
 
     sleep(3000);
 
