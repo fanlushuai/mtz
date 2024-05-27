@@ -5,8 +5,8 @@ const { Config } = require("./config");
 AutojsUtil.loadUI("美添赚助手", "./project.json", "./ui.xml");
 // 初始化界面数据
 // Config.setLSConfig2UI();
-Config.setLSConfig2UI();
 
+Config.setLSConfig2UI();
 AutojsUtil.autoServiceCheck();
 
 let exectuion;
@@ -20,11 +20,9 @@ function revoverBootButton() {
 }
 
 AutojsUtil.onChildStop(() => {
-  1111
-  log("main停止所有子线程")
-  threads.shutDownAll()
-})
-
+  log("main停止所有子线程");
+  threads.shutDownAll();
+});
 
 ui.emitter.on("resume", function () {
   revoverBootButton();
