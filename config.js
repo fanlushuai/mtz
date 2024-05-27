@@ -119,7 +119,7 @@ const Config = {
           json = {};
         }
 
-        let scritp = "json." + key + ' =" ' + value + '";';
+        let scritp = "json." + key + ' ="' + value + '";';
         eval(scritp);
         Config.save(json);
       },
