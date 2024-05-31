@@ -1,5 +1,3 @@
-const { AutojsUtil } = require("./autojsUtil.js");
-
 const Autojsx = {
   boot: function () {
     home();
@@ -8,9 +6,9 @@ const Autojsx = {
     sleep(1000);
     // 侧边栏是否打开
     if (text("打开USB调试").exists()) {
-      log("点击空白处")
-      press(device.width - 10, device.height / 2, 1)
-      sleep(500)
+      log("点击空白处");
+      press(device.width - 10, device.height / 2, 1);
+      sleep(500);
     }
 
     pageUpBySwipe();
@@ -53,7 +51,22 @@ const Autojsx = {
         now.getMinutes() +
         "-" +
         now.getSeconds();
-      let versionNum = new Date().getTime() - 1712972990081;
+
+      // 保证是int类型
+
+      let versionNum =
+        "1" +
+        (now.getMonth() + 1 > 9
+          ? now.getMonth() + 1
+          : "0" + (now.getMonth() + 1)) +
+        "" +
+        (now.getDate() > 9 ? now.getDate() : "0" + now.getDate()) +
+        "" +
+        (now.getHours() > 9 ? now.getHours() : "0" + now.getHours()) +
+        "" +
+        (now.getMinutes() > 9 ? now.getMinutes() : "0" + now.getMinutes()) +
+        "";
+      // (now.getSeconds() > 9 ? now.getSeconds() : "0" + now.getSeconds());
       log("设置版本");
       log(verisonName);
       log(versionNum);
@@ -66,17 +79,23 @@ const Autojsx = {
 
     let apkName = setVersion();
 
+    // log("开启 PaddleOCR");
+    // click(scrollUtillFind(text("PaddleOCR")));
+
+    // log("开启 打包默认的PaddleOCR训练数据");
+    // click(scrollUtillFind(text("打包默认的PaddleOCR训练数据")));
+
     log("关闭 显示启动界面");
     click(scrollUtillFind(text("显示启动界面")));
 
-    // log("开启 需要后台弹出界面权限")
-    // click(scrollUtillFind(text("需要后台弹出界面权限")))
+    // log("开启 需要后台弹出界面权限");
+    // click(scrollUtillFind(text("需要后台弹出界面权限")));
 
     log("开启 需要无障碍服务");
     click(scrollUtillFind(text("需要无障碍服务")));
 
-    // log("开启 需要悬浮窗权限")
-    // click(scrollUtillFind(text("需要悬浮窗权限")))
+    log("开启 需要悬浮窗权限");
+    click(scrollUtillFind(text("需要悬浮窗权限")));
 
     log("开启 简单加密js文件");
     click(scrollUtillFind(text("简单加密js文件")));
@@ -118,7 +137,7 @@ const Autojsx = {
     pageUpBySwipe();
 
     toast("老板，打包完成！！");
-    sleep(2000);
+    sleep(1000);
   },
   share: function (apkName) {
     click3Dot(apkName);
@@ -185,7 +204,7 @@ const Autojsx = {
       while (1) {
         let c = clipStorage.get("1", "111111");
         if (c != "111111") {
-          log("阻塞获取剪切板内容为：%s", c)
+          log("阻塞获取剪切板内容为：%s", c);
           return c;
         }
         sleep(200);
@@ -262,9 +281,11 @@ const Oppo = {
 
     log("上传成功");
     sleep(2000);
-    let downloadUrl = descMatches(/(https:.*)/).findOne(20000).desc()
-    log("获取链接 %s", downloadUrl)
-    return downloadUrl
+    let downloadUrl = descMatches(/(https:.*)/)
+      .findOne(10000)
+      .desc();
+    log("获取链接 %s", downloadUrl);
+    return downloadUrl;
     // log("长按复制");
     // let b = desc("复制").findOne();
     // press(b.bounds().centerX(), b.bounds().centerY(), 800);
@@ -274,7 +295,7 @@ const Oppo = {
 function click(b) {
   sleep(1 * 1000);
   // AutojsUtil.showPoint(b.bounds().centerX(), b.bounds().centerY());
-  log("点击 %s %s", b.bounds().centerX(), b.bounds().centerY());
+  // log("点击 %s %s", b.bounds().centerX(), b.bounds().centerY());
   press(b.bounds().centerX(), b.bounds().centerY(), 1);
   sleep(1 * 1000);
 }
@@ -326,4 +347,12 @@ function share(apkName) {
   WeiXin.sendTo("文件传输助手", downloadUrl);
 }
 
-share(build("美添赚助手"));
+let projectJsonPath = "./project.json";
+let projectJsonStr = files.read(projectJsonPath).toString();
+let projectData = JSON.parse(projectJsonStr);
+
+// log(projectData);
+
+let apkName = build(projectData.name);
+log(apkName);
+// share(apkName);
