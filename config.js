@@ -1,6 +1,7 @@
 const Config = {
   withdrawUserId: "",
   pushToken: "",
+  disableAccounts: "",
   save: function (json) {
     if (json == null) {
       return;
@@ -51,9 +52,12 @@ const Config = {
 
     let pushToken = lS.get("pushToken", "");
     this.pushToken = pushToken;
+    let disableAccounts = lS.get("disableAccounts", "");
+    this.disableAccounts = disableAccounts;
 
     ui.withdrawUserId.setText(withdrawUserId + "");
     ui.pushToken.setText(pushToken + "");
+    ui.disableAccounts.setText(disableAccounts + "");
   },
   setUI2LSConfig: function () {
     log("配置 UI->本地");
@@ -75,6 +79,14 @@ const Config = {
     log(pushToken);
     lS.put("pushToken", pushToken + "");
 
+    let disableAccounts = ui.disableAccounts.getText();
+    if (disableAccounts == null) {
+      disableAccounts = "";
+    }
+    this.disableAccounts = disableAccounts;
+    log(disableAccounts);
+    lS.put("disableAccounts", disableAccounts + "");
+
     let s = storages.create("msgpush-autojsx123455");
     s.put("pushToken", pushToken + "");
   },
@@ -90,6 +102,9 @@ const Config = {
     let pushToken = lS.get("pushToken", "");
     this.pushToken = pushToken;
     log("pushToken" + pushToken);
+    let disableAccounts = lS.get("disableAccounts", "");
+    this.disableAccounts = disableAccounts;
+    log("disableAccounts" + disableAccounts);
   },
   lsByFile: function () {
     let json = this.read();
