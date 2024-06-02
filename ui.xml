@@ -18,23 +18,19 @@
 	<vertical marginLeft="30" marginRight="30" marginTop="50">
 		<Switch id="autoService" marginTop="50" text="无障碍服务" textStyle="bold" textColor="#000000" textSize="16sp" checked="{{auto.service!=null}}" />
 		<Switch id="consoleShow" marginTop="20" text="控制台悬浮窗" textStyle="bold" textColor="#000000" textSize="16sp" checked="true" />
-		<text text="提现id" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
+		<text text="美添赚ID（提现）" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
 		<horizontal marginTop="1" gravity="center">
 			<text text="[" />
 			<input text="" lines="1" maxLength="11" id="withdrawUserId" w="150" gravitry="center" />
 			<text text="]" />
 		</horizontal>
-		<text text="推送token" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
+		<text text="PushPlus-Token" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
 		<horizontal marginTop="1" gravity="center">
-			<text text="[" />
-			<input text=""  id="pushToken" w="*" gravitry="center" />
-			<text text="]" />
+			<input text="" id="pushToken" w="*" gravitry="center" />
 		</horizontal>
-		<text text="关禁闭" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
+		<text text="微信禁用账号位置" marginTop="10" textStyle="bold" textColor="#000000" textSize="16sp" />
 		<horizontal marginTop="1" gravity="center">
-			<text text="[" />
 			<input text="" hint="1#3  禁用1,3号微信" maxLength="1000" id="disableAccounts" w="*" gravitry="center" />
-			<text text="]" />
 		</horizontal>
 		<vertical>
 			<horizontal marginTop="1" gravity="center">
