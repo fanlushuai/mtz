@@ -69,6 +69,25 @@ const Robot = {
   },
   changeNextAccount: function (cuAcc) {
     let accArr = WeiXin.getAllAccount();
+
+    let willDisableAccs = [];
+
+    // 排除禁闭账号
+    if (Config.disableAccounts != null && Config.disableAccounts != "") {
+      disableAccs = Config.disableAccounts.split("#");
+
+      for (let i = 0; i < accArr.length; ++i) {
+        let currentLocation = i + 1;
+        for (a of disableAccs) {
+          if (currentLocation + "" == a.trim()) {
+            willDisableAccs.push(accArr[i]);
+          }
+        }
+      }
+    }
+
+    let newArray = accArr.filter((a) => !willDisableAccs.some((b) => a === b));
+    accArr = newArray;
     // 切换到一个，有动作的账号。没有动作切他干啥？？？
     //过滤所有的账号。看看，有没有动作
     accArr = DailyStorage.canDoAccounts(accArr);
