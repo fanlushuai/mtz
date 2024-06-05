@@ -31,8 +31,9 @@ let willDisableAccs = [];
 if (Config.disableAccounts != null && Config.disableAccounts != "") {
   disableAccs = Config.disableAccounts.split("#");
 
-  for (let i = 0; i < accArr.length; ++i) {
+  for (let i = 0; i < accArr.length; i++) {
     let currentLocation = i + 1;
+    log(currentLocation)
     for (a of disableAccs) {
       if (currentLocation + "" == a.trim()) {
         willDisableAccs.push(accArr[i]);

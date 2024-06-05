@@ -72,11 +72,14 @@ const Robot = {
 
     let willDisableAccs = [];
 
+
+    log("禁用账号位置 %s", Config.disableAccounts)
+
     // 排除禁闭账号
     if (Config.disableAccounts != null && Config.disableAccounts != "") {
       disableAccs = Config.disableAccounts.split("#");
 
-      for (let i = 0; i < accArr.length; ++i) {
+      for (let i = 0; i < accArr.length; i++) {
         let currentLocation = i + 1;
         for (a of disableAccs) {
           if (currentLocation + "" == a.trim()) {
@@ -89,7 +92,7 @@ const Robot = {
     let newArray = accArr.filter((a) => !willDisableAccs.some((b) => a === b));
     accArr = newArray;
     log("过滤掉禁用的账号 %s", willDisableAccs);
-    
+
     log("剩余账号 %s", accArr);
     // 切换到一个，有动作的账号。没有动作切他干啥？？？
     //过滤所有的账号。看看，有没有动作
@@ -175,6 +178,9 @@ const Robot = {
   },
   start: function () {
     WeiXin.boot();
+
+    log("禁用账号位置 %s", Config.disableAccounts)
+
     while (1) {
       log("开始任务");
       Robot.currentAccount = WeiXin.wo();

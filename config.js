@@ -16,9 +16,11 @@ const Config = {
       if (content != "" || content != null) {
         jsonContent = JSON.parse(content);
 
+        // 注意，这里需要添加
         if (
           jsonContent.pushToken != json.pushToken ||
-          jsonContent.withdrawUserId != json.withdrawUserId
+          jsonContent.withdrawUserId != json.withdrawUserId ||
+          jsonContent.disableAccounts != json.disableAccounts
         ) {
           log("更新配置");
           files.write(path, JSON.stringify(json), (encoding = "utf-8"));
@@ -47,11 +49,11 @@ const Config = {
     let lS = this.localStorage();
 
     let withdrawUserId = lS.get("withdrawUserId", "");
-
     this.withdrawUserId = withdrawUserId;
 
     let pushToken = lS.get("pushToken", "");
     this.pushToken = pushToken;
+
     let disableAccounts = lS.get("disableAccounts", "");
     this.disableAccounts = disableAccounts;
 
@@ -102,6 +104,7 @@ const Config = {
     let pushToken = lS.get("pushToken", "");
     this.pushToken = pushToken;
     log("pushToken" + pushToken);
+
     let disableAccounts = lS.get("disableAccounts", "");
     this.disableAccounts = disableAccounts;
     log("disableAccounts" + disableAccounts);
