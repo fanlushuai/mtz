@@ -88,6 +88,9 @@ const Robot = {
 
     let newArray = accArr.filter((a) => !willDisableAccs.some((b) => a === b));
     accArr = newArray;
+    log("过滤掉禁用的账号 %s", willDisableAccs);
+    
+    log("剩余账号 %s", accArr);
     // 切换到一个，有动作的账号。没有动作切他干啥？？？
     //过滤所有的账号。看看，有没有动作
     accArr = DailyStorage.canDoAccounts(accArr);
