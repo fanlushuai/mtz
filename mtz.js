@@ -252,7 +252,18 @@ const MTZ = {
         log("已进入 %s", docCount);
         docCount++;
 
-        let randomNum = random(10, 15);
+        // 模拟阅读，进行向下滑动。大概滑动5次吧。
+
+        log("模拟阅读10s");
+        let times = 0;
+        do {
+          sleep(2000);
+          AutojsUtil.pageDownBySwipe();
+          times++;
+        } while (times < 5);
+
+        // let randomNum = random(10, 15);
+        let randomNum = random(0, 5);
         log("随机阅读 %s 秒", randomNum);
         sleep(randomNum * 1000);
       } else {
