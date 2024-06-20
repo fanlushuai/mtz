@@ -7,6 +7,16 @@ const { WeiXin } = require("./weixin");
 
 const Robot = {
   currentAccount: "",
+  useWholeService: function () {
+
+    let ele = textMatches(/(使用完整服务|允许)/).findOne(5000)
+    if (ele !== null) {
+      AutojsxUtil.click(ele);
+      if (ele.getText() == "使用完整服务") {
+        this.useWholeService()
+      }
+    }
+  },
   jump2MTZ: function () {
     log("开始进入每添赚");
     WeiXin.intoStarDir();
@@ -18,7 +28,8 @@ const Robot = {
     });
 
     // 首次进入，网站多次跳转，反应很慢
-    sleep(6 * 1000);
+    sleep(1 * 1000);
+    this.useWholeService()  //这个最少尝试5s。
   },
   sign: function () {
     log("-->开始签到");
