@@ -158,7 +158,7 @@ const WeiXin = {
     sleep(1000);
 
     // 可能出现登陆失效
-    let logniExpired = AutojsUtil.waitFor(id("iol").text("登录"), 30);
+    let logniExpired = AutojsUtil.waitFor(text("登录"), 30);
     if (logniExpired) {
       log("登陆失效 %s", name);
       sleep(1000);
@@ -170,7 +170,8 @@ const WeiXin = {
     // 找通讯录的方式，不靠谱。在没有登陆界面，依然可以看到
     AutojsUtil.waitFor(id("icon_tv").text("通讯录").visibleToUser(true), 30);
 
-    if (text("轻触头像以切换账号").exists()) {
+    let ele = text("轻触头像以切换账号").findOne(2000)
+    if (ele != null) {
       log("没有登陆成功");
       return false;
     }
