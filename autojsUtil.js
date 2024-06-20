@@ -1,5 +1,6 @@
 const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush");
+const { Robot } = require("./robot");
 const { Smms } = require("./smms");
 
 const AutojsUtil = {
@@ -139,7 +140,7 @@ const AutojsUtil = {
     // 立即启动
     log("开启worker 线程")
 
-    threads.start(()=>{
+    threads.start(() => {
       try {
         taskFunc()
       } catch (error) {
@@ -226,6 +227,49 @@ const AutojsUtil = {
         }
       }
     }, 8);
+
+    // 处理一下登陆的异常。登陆失败卡在我的界面。
+    if (targetName == "我") {
+      log("我异常，尝试猜测可能是。 进行登陆异常处理")
+      // 判断是否在登陆切换界面。
+
+      let eleTX = text("轻触头像以切换账号").findOne(2000)
+      if (eleTX != null) {
+        log("异常诊断：卡在登陆界面")
+        log("基于上个账号进行登陆 %s ", Robot.currentAccount)
+        Robot.changeNextAccount(Robot.currentAccount)
+
+        sleep(3000)
+
+        log("继续查看我")
+        let ele = this.retryGet(function () {
+          log("查 %s", targetName);
+          let e = selector.findOne(findTimeLimitSec * 1000);
+          if (e) {
+            return e;
+          } else {
+            log("选择器查找失败 %s", targetName);
+
+            if (refreshMethod) {
+              // 也可以使用自定义方法刷新ui
+              refreshMethod();
+            } else {
+              // 默认使用这种方式刷新ui
+              AutojsUtil.refreshUI(appName);
+            }
+          }
+        }, 3);
+
+        if (ele != null) {
+          log("我 异常处理成功")
+          return ele;
+        }
+
+      }
+
+    }
+
+
 
     if (!ele) {
       // alert("选择器查找失败");
