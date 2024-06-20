@@ -14,9 +14,11 @@ const Robot = {
     if (ele !== null) {
       log("存在完整服务")
       AutojsUtil.clickEle(ele);
+      sleep(5000)
       if (ele.getText() == "使用完整服务") {
-        log("进一步点击")
-        this.useWholeService()
+        log("进一步点击 允许")
+        let ele = textMatches(/允许)/).findOne(5000)
+        AutojsUtil.clickEle(ele);
       }
     }
   },
