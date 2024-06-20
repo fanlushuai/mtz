@@ -1,3 +1,4 @@
+const { AutojsUtil } = require("./autojsUtil.js");
 const { Config } = require("./config.js");
 const { DailyStorage } = require("./dailyStorage");
 const { pushplus } = require("./msgPush.js");
@@ -8,11 +9,13 @@ const { WeiXin } = require("./weixin");
 const Robot = {
   currentAccount: "",
   useWholeService: function () {
-
+    log("完整服务是否存在")
     let ele = textMatches(/(使用完整服务|允许)/).findOne(5000)
     if (ele !== null) {
-      AutojsxUtil.click(ele);
+      log("存在完整服务")
+      AutojsUtil.clickEle(ele);
       if (ele.getText() == "使用完整服务") {
+        log("进一步点击")
         this.useWholeService()
       }
     }
