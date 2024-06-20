@@ -229,7 +229,7 @@ const AutojsUtil = {
     }, 8);
 
     // 处理一下登陆的异常。登陆失败卡在我的界面。
-    if (targetName == "我") {
+    if (targetName == "我" && ele == null) {
       log("我异常，尝试猜测可能是。 进行登陆异常处理")
       // 判断是否在登陆切换界面。
 
