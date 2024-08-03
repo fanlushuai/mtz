@@ -22,7 +22,7 @@ const MTZ = {
         AutojsUtil.clickEle(e.parent());
 
         sleep(2000);
-        if (textMatches(/(.*今日签到.*)/).exists()) {
+        if (textMatches(/(.*积分3000以上奖励300.*)/).exists()) {
           break;
         }
 
@@ -34,35 +34,49 @@ const MTZ = {
     }
   },
   sign: function () {
+    function clickQiandao() {
+      let testBelowEle = text("活动积分3000以上奖励300积分").findOne(5000);
+
+      if (testBelowEle == null) {
+        return false;
+      }
+
+      let b = testBelowEle.bounds();
+
+      let maxHeight = b.top;
+
+      log("最大高度 %d", maxHeight);
+
+      let actionsEles = text("点击领取").find();
+      for (let actionsEle of actionsEles) {
+        // log(actionsEle.text());
+        // log(actionsEle.bounds().top);
+        if (actionsEle.bounds().top < maxHeight) {
+          log("获得目标 点击领取 高度 %d", actionsEle.bounds().top);
+          AutojsUtil.clickEle(actionsEle);
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     log("签到"); //这个位置卡住了
 
-    while (1) {
-      let ele = textMatches(/(.*今日签到.*)/).findOne(5 * 1000);
+    if (clickQiandao()) {
+      // 签到成功，会有弹窗
 
-      if (ele) {
-        let eles = ele.parent().find(text("点击领取"));
-        if (eles) {
-          log("点 点击领取");
-          AutojsUtil.clickEle(eles[0]);
+      if (AutojsUtil.waitFor(text("长按或截图保存推广海报"), 5)) {
+        log("签到成功");
+        DailyStorage.setSignToday();
 
-          // 签到成功，会有弹窗
-
-          if (AutojsUtil.waitFor(text("长按或截图保存推广海报"), 5)) {
-            log("签到成功");
-            DailyStorage.setSignToday();
-
-            sleep(1000);
-            WeiXin.refreshWeb(); //关闭签到的弹窗
-          }
-        } else {
-          log("没有找到签到，可能已经签到");
-        }
-
-        return;
-      } else {
-        log("没有找到");
-        WeiXin.refreshWeb();
+        sleep(1000);
+        WeiXin.refreshWeb(); //关闭签到的弹窗
       }
+
+      return true;
+    } else {
+      return false;
     }
   },
   helpEach: function () {
